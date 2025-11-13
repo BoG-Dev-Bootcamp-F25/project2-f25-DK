@@ -195,3 +195,13 @@ export default function Page() {
 ### (Bonus) Search Bar
 
 ### (Bonus) Edit Training Logs
+
+
+### Divison of work
+
+| **Name** | **Project Contributions**                                                     |
+|----------|--------------------------------------------------------------------------------|
+| Dongjae  | Animals view, forms for creating/updating  animals, sidebar component          |
+| Keshav   | Training logs view, forms for creating/updating training logs, signup/login UI |
+
+Remaining tasks: Admin panel with user management, CRUD operations for database, JWT Token generation
