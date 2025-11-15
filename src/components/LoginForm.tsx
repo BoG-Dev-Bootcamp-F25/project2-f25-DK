@@ -1,0 +1,44 @@
+"use client";
+import Link from "next/link";
+import FormInput from "./FormInput";
+import {useForm, SubmitHandler} from 'react-hook-form'
+import { useRouter } from "next/navigation";
+
+type Inputs = {
+    email: string;
+    password: string;
+}
+
+const LoginForm = () => {
+
+    const router = useRouter();
+    const { register, handleSubmit, watch, formState: { errors }} = useForm<Inputs>()
+
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+
+       router.push('/')
+
+    }
+
+    return <div className='w-[700px] h-[682px] flex flex-col'>
+        <form className="h-full flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+        <h1 className="text-center font-bold text-6xl">Log In</h1>
+        
+        <div className='mt-4 flex-1 flex flex-col justify-around'>
+            <FormInput type={'email'} label={'Email'} placeholder="Email" {...register("email", {required: true})} />
+             {errors.email?.type === "required" && (
+                <p className='pl-4' role="alert">Email name is required</p>
+            )}
+
+            <FormInput type={'password'} label={'Password'} placeholder="Password" {...register("password", {required: true})}/>
+             {errors.password?.type === "required" && (
+                <p className='pl-4' role="alert">Password is required</p>
+            )}
+        </div>
+        <button type="submit" className='w-full mt-4 p-4 rounded-xl border-2 bg-red-700 text-white text-4xl font-bold'>Log In</button>
+        </form>
+        <p className='pt-4 text-center'>Don't have an account? <Link href="/signup" className="font-bold">Sign Up</Link></p>
+    </div>
+}
+ 
+export default LoginForm;
