@@ -12,11 +12,11 @@ type Inputs = {
 const LoginForm = () => {
 
     const router = useRouter();
-    const { register, handleSubmit, watch, formState: { errors }} = useForm<Inputs>()
+    const { register, handleSubmit, formState: { errors }} = useForm<Inputs>()
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
 
-       router.push('/')
+       router.push('/dashboard')
 
     }
 
