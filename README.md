@@ -204,6 +204,6 @@ export default function Page() {
 | **Name** | **Project Contributions**                                                     |
 |----------|--------------------------------------------------------------------------------|
 | Dongjae  | Animals view, forms for creating/updating  animals, sidebar component          |
-| Keshav   | Training logs view, forms for creating/updating training logs, signup/login UI |
+| Keshav   | Training logs view, forms for creating/updating training logs, signup/login UI, authentication and authorization|
 
 Remaining tasks: Admin panel with user management, CRUD operations for database, JWT Token generation
