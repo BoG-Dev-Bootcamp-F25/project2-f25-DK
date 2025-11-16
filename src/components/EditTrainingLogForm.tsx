@@ -103,8 +103,8 @@ const EditTrainingLogForm = () => {
                 />
             </div>
             <div className='mt-2 flex gap-6 col-span-3'>
-                <button className='ml-4 max-w-[256px] w-full px-4 py-2 text-2xl border-4 rounded-xl text-red-500 border-red-500'>Cancel</button>
-                <button className='px-4 max-w-[256px] w-full py-2 text-2xl text-white bg-red-600 rounded-xl'>Save</button>
+                {/* <button className='ml-4 max-w-[256px] w-full px-4 py-2 text-2xl border-4 rounded-xl text-red-500 border-red-500'>Cancel</button> */}
+                {/* <button className='px-4 max-w-[256px] w-full py-2 text-2xl text-white bg-red-600 rounded-xl'>Save</button> */}
             </div>
             </form>
         </div>

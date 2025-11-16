@@ -9,6 +9,8 @@
     "test-ct": "playwright test -c playwright-ct.config.ts"
   },
   "dependencies": {
+    "argon2": "^0.44.0",
+    "axios": "^1.13.2",
     "mongoose": "^8.19.4",
     "next": "16.0.1",
     "next-auth": "^4.24.13",
