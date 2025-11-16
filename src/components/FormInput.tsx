@@ -97,7 +97,7 @@ const FormInput = ({
                         className={
                             className
                                 ? className
-                                : 'flex-1 pt-2 text-2xl w-full border-0 border-b-4 border-red-500'
+                                : 'flex-1 pt-2 text-2xl w-full focus:ring-0 border-0 border-b-4 border-red-500'
                         }
                         placeholder={placeholder}
                     ></input>

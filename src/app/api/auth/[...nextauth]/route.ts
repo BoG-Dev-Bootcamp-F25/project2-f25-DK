@@ -1,5 +1,5 @@
-import NextAuth from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 const providers = [
     CredentialsProvider({
@@ -10,35 +10,46 @@ const providers = [
         // e.g. domain, username, password, 2FA token, etc.
         // You can pass any HTML attribute to the <input> tag through the object.
         credentials: {
-            username: { label: "Username", type: "text", placeholder: "jsmith" },
-            password: { label: "Password", type: "password" }
+            username: {
+                label: 'Username',
+                type: 'text',
+                placeholder: 'jsmith',
+            },
+            password: { label: 'Password', type: 'password' },
         },
         async authorize(credentials, req) {
-            console.log(req)
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        const res = await fetch("/your/endpoint", {
-            method: 'POST',
-            body: JSON.stringify(credentials),
-            headers: { "Content-Type": "application/json" }
-        })
-        const user = await res.json()
-
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-            return user
-        }
-        // Return null if user data could not be retrieved
-        return null
-        }
-    })
-]
+            console.log('Authorize request ', req);
+            try {
+                const baseUrl = process.env.NEXTAUTH_URL;
+                // You need to provide your own logic here that takes the credentials
+                // submitted and returns either a object representing a user or value
+                // that is false/null if the credentials are invalid.
+                // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
+                // You can also use the `req` object to obtain additional parameters
+                // (i.e., the request IP address)
+                
+                const res = await fetch(`${baseUrl}/api/user/verify`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(req.body) })
+                                console.log(res);
+                console.log(res);
+                const respBody = await res.json()
+                console.log(respBody)
+                if (res.status == 200) {
+                    
+                    return respBody;
+                }
+                // Return null if user data could not be retrieved
+                return null;
+            } catch {
+                return null;
+            }
+        },
+    }),
+];
 const handler = NextAuth({
-    providers
-})
+    providers,
+    pages: {
+        signIn: '/signin',
+    },
+});
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
