@@ -1,13 +1,15 @@
-import EditTrainingLogForm from "@/components/EditTrainingLogForm";
-import LoginForm from "@/components/LoginForm";
-import TrainingLogCard, { mockData } from "@/components/TrainingLogCard";
+import EditTrainingLogForm from '@/components/EditTrainingLogForm';
 
 export default function SignInPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full flex-col justify-center items-center py-32 px-16 bg-white dark:bg-black">
-        <EditTrainingLogForm />
-      </main>
-    </div>
-  );
+    return (
+            <main className="min-h-full w-full bg-white dark:bg-black">
+                <h1 className="pl-8 pb-2 text-left text-4xl text-gray-900 ">
+                    Training logs
+                </h1>
+                <hr />
+                <div className="mt-4 flex flex-col justify-center items-center">
+                    <EditTrainingLogForm />{' '}
+                </div>
+            </main>
+    );
 }

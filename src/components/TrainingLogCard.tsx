@@ -41,7 +41,7 @@ const TrainingLogCard = ({data} : {data : LogData} ) => {
 
 
     return (
-        <div className="flex flex-col md:flex-row rounded-2xl shadow-2xs md:min-w-4xl">
+        <div className="flex flex-col md:flex-row rounded-2xl w-4/5 shadow-2xs md:min-w-4xl">
             <div className='bg-indigo-900  sm:rounded-t-2xl md:rounded-t-none md:rounded-l-2xl text-amber-50 py-8 px-4 flex flex-col items-center'><span className='font-bold text-center text-4xl'>{data.date.getDate()}</span><span className='font-medium text-2xl'>{data.date.toLocaleString('default', { month: 'short' })}{`-`}{data.date.getFullYear()}</span></div>
             <div className="flex-1 p-4">
                 <div className='flex items-center'>
