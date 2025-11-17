@@ -14,7 +14,7 @@ type FormInputProps = {
         | 'number';
     placeholder?: string;
     className?: string;
-    dropdownOptions?: string[];
+    dropdownOptions?: Map<string, string | number>;
 };
 
 const FormInput = ({
@@ -53,6 +53,7 @@ const FormInput = ({
                         {label}
                     </label>
                     <select
+                        {...props}
                         id={labelId}
                         className={
                             className
@@ -60,8 +61,8 @@ const FormInput = ({
                                 : 'flex-1 text-2xl w-full border-0 border-b-4 border-red-500'
                         }
                     >
-                        {dropdownOptions.map((o, i) => {
-                            return <option value={o} key={i}>{o}</option>;
+                        {dropdownOptions.keys().toArray().map((o, i) => {
+                            return <option value={dropdownOptions.get(o)} key={i}>{o}</option>;
                         })}
                     </select>
                 </>
@@ -69,6 +70,7 @@ const FormInput = ({
                 <>
                     <div className="flex items-center gap-2">
                         <input
+                            {...props}
                             id={labelId}
                             type={type}
                             className="flex-1 pt-2 appearance-none w-6 h-6 border-2 border-red-400 rounded-sm bg-white checked:bg-red-500 checked:border-red-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
