@@ -15,6 +15,7 @@ export default function RootLayout({
         <div className='flex-1 flex flex-row'>
             <div className='w-80 border-2'></div>
             {children}
+
         </div>
     </div>
   );

@@ -5,7 +5,7 @@ import {useForm, SubmitHandler} from 'react-hook-form'
 import router from "next/router";
 
 type Inputs = {
-    fullName :string;
+    fullName: string;
     email: string;
     password: string;
     confirmPassword: string;
@@ -63,10 +63,8 @@ const SignUpForm = () => {
             )}
             <FormInput type={'checkbox'} label={'Admin Access'} {...register("admin")} />
         </div>
-        <button type="submit" className='w-full mt-4 p-4 rounded-xl border-2 bg-red-700 text-white text-4xl font-bold'>Sign up</button>
         </form>
-        <p className='pt-4 text-center'>Already have an account? <Link href="/signin" className="font-bold">Sign In</Link></p>
-    </div>
-}
- 
+        </div>
+};
+
 export default SignUpForm;

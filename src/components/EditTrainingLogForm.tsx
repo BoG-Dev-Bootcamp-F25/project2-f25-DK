@@ -2,6 +2,7 @@
 import { useParams, useRouter } from 'next/navigation';
 import FormInput from './FormInput';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import Link from 'next/link';
 
 type Inputs = {
     title: string;
@@ -38,6 +39,7 @@ const EditTrainingLogForm = () => {
         // TODO: Use the authenticated user's ID to get the list of animals for the user.
         if (id) { // edit existing training log
 
+            
         } else { //create new training log
 
         }
@@ -165,10 +167,8 @@ const EditTrainingLogForm = () => {
                     )}
                 </div>
                 <div className="mt-2 flex gap-6 col-span-3">
-                    <button className="ml-4 max-w-[256px] w-full px-4 py-2 text-2xl border-4 rounded-xl text-red-500 border-red-500">
-                        Cancel
-                    </button>
-                    <button className="px-4 max-w-[256px] w-full py-2 text-2xl text-white bg-red-600 rounded-xl">
+                    <Link className="px-4 text-center max-w-[256px] w-full py-2 text-2xl text-white bg-red-600 rounded-xl" href="/dashboard/training-logs">Cancel</Link>
+                    <button type="submit" className="px-4 max-w-[256px] w-full py-2 text-2xl text-white bg-red-600 rounded-xl">
                         Save
                     </button>
                 </div>

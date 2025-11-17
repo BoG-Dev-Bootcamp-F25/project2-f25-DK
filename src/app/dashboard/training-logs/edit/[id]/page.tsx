@@ -7,7 +7,7 @@ export default function SignInPage() {
                     Training logs
                 </h1>
                 <hr />
-                <div className="mt-4 flex flex-col justify-center items-center">
+                <div className="my-4 flex flex-col justify-center items-center">
                     <EditTrainingLogForm />{' '}
                 </div>
             </main>
