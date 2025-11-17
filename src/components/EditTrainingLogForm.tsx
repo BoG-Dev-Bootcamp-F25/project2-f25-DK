@@ -34,9 +34,15 @@ const EditTrainingLogForm = () => {
     });
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
+
+        // TODO: Use the authenticated user's ID to get the list of animals for the user.
+        if (id) { // edit existing training log
+
+        } else { //create new training log
+
+        }
         console.log('Form data', data);
     };
-    // TODO: Use the currently logged in user ID to get the list of animals for the user.
 
     return (
         <div className="w-full max-w-6xl">
