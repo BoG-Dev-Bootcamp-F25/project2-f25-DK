@@ -2,6 +2,16 @@
 
 [![Playwright Tests](https://github.com/BoG-Dev-Bootcamp-F25/project2-f25-DK/actions/workflows/playwright.yml/badge.svg)](https://github.com/BoG-Dev-Bootcamp-F25/project2-f25-DK/actions/workflows/playwright.yml)
 
+## Setup
+
+In the project root, create a `.env` file and set the following environment variables
+
+```env
+NEXTAUTH_URL=http://localhost:3000
+MONGO_DB='mongodb+srv://<your_mongodb_user>:<your_mongodb_password>.aimiy6y.mongodb.net/?appName=Cluster0'
+DB_NAME='animal-tracking'
+```
+
 ## Description
 
 Welcome to the final project of this year's dev bootcamp! For this project, you will create a full-stack animal training management app (this is a mini version of an app that BoG developed for Healing4Heroes). Your job is to develop a frontend and backend that interact with each other for deployment functionality to manage different users, animals, and training logs. Schemas for these data models can be found in `Schemas.md`.
