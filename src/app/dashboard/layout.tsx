@@ -1,5 +1,9 @@
 "use client";
+import NavBar from "@/components/NavBar";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
+
 
 
 export default function RootLayout({
@@ -10,11 +14,17 @@ export default function RootLayout({
   const {status} = useSession({required: true});
 
   return (
-    <div className="flex flex-col min-h-screen bg-zinc-50 font-sans dark:bg-black">
-        <div className='h-36 border-2'></div>
-        <div className='flex-1 flex flex-row'>
-            <div className='w-80 border-2'></div>
-            {children}
+    <div className="flex flex-col h-screen bg-zinc-50 font-sans dark:bg-black">
+        <div className='min-h-36 overflow-y-auto'>
+          <NavBar />
+        </div>
+        <div className='flex-1 flex flex-row overflow-hidden'>
+            <div className='min-w-80 overflow-y-auto hidden md:block bg-zinc-50'>
+              <button onClick={() => {signOut()}}>Sign Out</button>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              {children}
+            </div>
         </div>
     </div>
   );
