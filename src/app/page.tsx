@@ -6,8 +6,9 @@ export default function Home() {
       <main className="flex h-screen min-h-0 overflow-hidden w-full  flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
           <h1 className="max-w-256 text-8xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            Animal training made <span className='text-red-600'>easy</span>
+            Animal training made
           </h1>
+          <p><span className='text-8xl text-red-600'>easy</span></p>
           <p className="max-w-xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod accusantium, corporis illo aliquam quis perspiciatis assumenda quidem dicta expedita repellendus, in provident quisquam animi, blanditiis cum nisi cumque possimus placeat.
            
