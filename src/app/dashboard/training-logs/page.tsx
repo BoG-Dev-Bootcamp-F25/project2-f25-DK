@@ -5,9 +5,9 @@ import Image from 'next/image';
 
 export default function SignInPage() {
     return (
-            <main className="min-h-full w-full bg-white dark:bg-black">
-              <div className='p-8 flex flex-row justify-between items-center'>
-                <h1 className="text-left text-4xl font-bold text-gray-400 ">
+            <main className="min-h-full w-full bg-white dark:bg-black flex flex-col">
+              <div className='p-8  flex flex-row justify-between items-center'>
+                <h1 className="text-left text-4xl font-bold text-gray-400">
                     Training logs
                 </h1>
                 <Link className='mr-16' href="/dashboard/training-logs/new">
@@ -16,7 +16,7 @@ export default function SignInPage() {
               </div>
                 
                 <hr />
-                <div className="mt-8 mx-4 flex flex-col gap-4 justify-start items-center">
+                <div className="mt-8 mx-4 overflow-y-scroll flex-1 flex flex-col gap-4 justify-start items-center">
                     <TrainingLogCard data={mockData} />
                     <TrainingLogCard data={mockData} />
                     <TrainingLogCard data={mockData} />
