@@ -27,14 +27,17 @@ const providers = [
                 // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
                 // You can also use the `req` object to obtain additional parameters
                 // (i.e., the request IP address)
-                
-                const res = await fetch(`${baseUrl}/api/user/verify`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(req.body) })
-                                console.log(res);
+
+                const res = await fetch(`${baseUrl}/api/user/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(req.body),
+                });
                 console.log(res);
-                const respBody = await res.json()
-                console.log(respBody)
+                console.log(res);
+                const respBody = await res.json();
+                console.log(respBody);
                 if (res.status == 200) {
-                    
                     return respBody;
                 }
                 // Return null if user data could not be retrieved
@@ -45,8 +48,25 @@ const providers = [
         },
     }),
 ];
+
 const handler = NextAuth({
     providers,
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                // Add custom properties from the user object to the token
+                token.admin = (user as any).admin;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            // Add custom properties from the token to the session user object
+            if (session.user) {
+                (session.user as any).admin = token.admin;
+            }
+            return session;
+        },
+    },
     pages: {
         signIn: '/signin',
     },

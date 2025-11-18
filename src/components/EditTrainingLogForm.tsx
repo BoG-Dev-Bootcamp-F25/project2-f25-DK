@@ -47,9 +47,9 @@ const EditTrainingLogForm = () => {
     };
 
     return (
-        <div className="w-full max-w-6xl">
+        <div className="h-full w-4/5">
             <form
-                className="h-full m-2 grid grid-cols-3"
+                className="overflow-y-auto m-2 grid grid-cols-3"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div className="col-span-3">
