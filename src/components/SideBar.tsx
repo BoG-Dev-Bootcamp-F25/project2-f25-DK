@@ -82,7 +82,7 @@ const SideBar = () => {
     return (
         
         <div>
-            <div className="p-4 space-y-2">
+            <div className="p-4 h-screen space-y-2">
                 {/* --- Navigational Buttons --- */}
                 
                 <SidebarItem 
@@ -98,8 +98,8 @@ const SideBar = () => {
                     activeIconSrc="/images/activeAnimalsLogo.png"
                     onClick={() => handleClick('Animals')}
                 />
-                <hr></hr>
-                <h1 className="font-bold">
+                <hr className="p-2"></hr>
+                <h1 className="font-bold pl-2 text-xl">
                     Admin Access
                 </h1>
                 
