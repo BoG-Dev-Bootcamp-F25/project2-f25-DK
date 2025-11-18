@@ -15,14 +15,14 @@ export default function RootLayout({
 
   return (
     <div className="flex flex-col h-screen bg-zinc-50 font-sans dark:bg-black">
-        <div className='min-h-36 overflow-y-auto'>
+        <div className='min-h-24'>
           <NavBar />
         </div>
         <div className='flex-1 flex flex-row overflow-hidden'>
-            <div className='min-w-80 overflow-y-auto hidden md:block bg-zinc-50'>
+            <div className='min-w-80 h-full overflow-y-auto hidden xl:block bg-zinc-50'>
               <button onClick={() => {signOut()}}>Sign Out</button>
             </div>
-            <div className="flex-1 overflow-y-auto">
+            <div className="h-full flex-1 min-h-0 overflow-hidden">
               {children}
             </div>
         </div>
