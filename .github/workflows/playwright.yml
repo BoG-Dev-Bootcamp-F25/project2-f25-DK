@@ -1,7 +1,7 @@
 name: Playwright Tests
 env:
-  NEXTAUTH_URL=http://localhost:3000
-  DB_NAME='animal-tracking'
+  NEXTAUTH_URL: http://localhost:3000
+  DB_NAME: 'animal-tracking'
   MONGO_DB: ${{ secrets.MONGO_DB }}
 on:
   push:
