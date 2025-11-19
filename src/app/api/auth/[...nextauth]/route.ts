@@ -53,6 +53,7 @@ const handler = NextAuth({
     providers,
     callbacks: {
         async jwt({ token, user }) {
+            console.log('JWT callback user ', user)
             if (user) {
                 // Add custom properties from the user object to the token
                 token.admin = (user as any).admin;
@@ -60,6 +61,7 @@ const handler = NextAuth({
             return token;
         },
         async session({ session, token }) {
+            console.log('Session data ', session);
             // Add custom properties from the token to the session user object
             if (session.user) {
                 (session.user as any).admin = token.admin;

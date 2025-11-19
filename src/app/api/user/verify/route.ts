@@ -8,7 +8,7 @@ export const POST = async (req: NextRequest): Promise<Response> => {
 
     // lookup in database with encrypted password
     const user = await findUserByEmail({ email });
-
+    
     if (!user) {
         return new Response(
             JSON.stringify({ error: 'Could not find user with provided email' }),

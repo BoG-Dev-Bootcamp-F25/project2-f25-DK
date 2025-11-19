@@ -1,22 +1,12 @@
 import { InferSchemaType } from 'mongoose';
 import connectDB from '..';
-import { User } from '../models/User';
+import { User, UserDocument, UserType } from '../models/User';
 import findUserByEmail from './findUserByEmail';
 import argon2 from 'argon2';
 
-interface UserData {
-    email: string;
-    fullName: string;
-    password: string;
-    admin: boolean;
-}
 
-interface CreateUserResponse{
-    data: UserData & {id_: string}
-}
-
-const createUser = async (userData: UserData): Promise<CreateUserResponse | null> => {
-    const {email} = userData;
+const createUser = async (data: UserType): Promise<UserDocument | null> => {
+    const {email} = data;
     try{
         await connectDB();
         const existingUser = await findUserByEmail({email});
@@ -26,13 +16,11 @@ const createUser = async (userData: UserData): Promise<CreateUserResponse | null
             return null;
         }
 
-        userData.password = await argon2.hash(userData.password);
-        console.log(userData);
-        const newUser = new User(userData);
+        data.password = await argon2.hash(data.password);
+        console.log(data);
+        const newUser = new User(data);
         await newUser.save();
-        //@ts-ignore
-        const responseData: CreateUserResponse = {data: {fullName: newUser.fullName, email: newUser.email, admin: newUser.admin, id_: newUser.id}};
-        return responseData
+        return newUser
     } catch (err) {
         console.error(`[ERROR]: Error encountered while creating user: ${err}`);
         return null;
