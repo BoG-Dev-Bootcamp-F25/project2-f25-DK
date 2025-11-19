@@ -5,11 +5,11 @@ import updateAnimal from "../../../../server/mongodb/actions/updateAnimal";
 import { getServerSession } from "next-auth";
 import findAnimals from "../../../../server/mongodb/actions/findAllAnimals";
 import findAnimalsByOwner from "../../../../server/mongodb/actions/findAnimalsByOwner";
-
+import { auth } from "@/lib/auth";
 
 export const GET = async (req: NextRequest): Promise<Response> => {
 
-    const session = await getServerSession();
+    const session = await auth();
     const isAdmin = (session?.user as any).admin;
     const userId = (session?.user as any)._id;
     const queryAll = req.nextUrl.searchParams.get('all')
@@ -37,10 +37,10 @@ export const GET = async (req: NextRequest): Promise<Response> => {
 export const POST = async (req: NextRequest): Promise<Response> => {
     const data = await req.json()
 
-    const session = await getServerSession();
+    const session = await auth();
     const userId = (session?.user as any)._id;
-
     data.owner = userId;
+    data.profilePicture = "/images/appLogo.png"
 
     const animal = await createAnimal(data);
 
@@ -56,6 +56,14 @@ export const POST = async (req: NextRequest): Promise<Response> => {
 
 export const PATCH = async (req: NextRequest): Promise<Response> => {
  
+    const session = await auth();
+
+    if (!session) {
+       return new Response(
+            JSON.stringify({ error: 'You must be logged in to make this request' }),
+            { status: 401 }
+        ); 
+    }
     const data = await req.json()
     const animal = await updateAnimal(data);
 

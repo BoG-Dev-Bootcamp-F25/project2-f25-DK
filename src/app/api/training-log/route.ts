@@ -1,8 +1,5 @@
 
 import { NextRequest } from "next/server";
-import createAnimal from "../../../../server/mongodb/actions/createAnimal";
-import updateAnimal from "../../../../server/mongodb/actions/updateAnimal";
-import { getServerSession } from "next-auth";
 import findAllTrainingLogs from "../../../../server/mongodb/actions/findAllTrainingLogs";
 import findTrainingLogsByAnimal from "../../../../server/mongodb/actions/findTrainingLogsByAnimal";
 import findAnimalsByOwner from "../../../../server/mongodb/actions/findAnimalsByOwner";
@@ -10,11 +7,14 @@ import { TrainingLogDocument } from "../../../../server/mongodb/models/TrainingL
 import findAnimalById from "../../../../server/mongodb/actions/findAnimalById";
 import createTrainingLog from "../../../../server/mongodb/actions/createTrainingLog";
 import updateTrainingLog from "../../../../server/mongodb/actions/updateTrainingLog";
-
+import { auth } from "@/lib/auth";
 
 export const GET = async (req: NextRequest): Promise<Response> => {
 
-    const session = await getServerSession();
+    const session = await auth();
+    console.log('Current session ', session)
+
+
     const isAdmin = (session?.user as any).admin;
     const userId = (session?.user as any)._id;
     const queryAll = req.nextUrl.searchParams.get('all')
@@ -32,7 +32,7 @@ export const GET = async (req: NextRequest): Promise<Response> => {
         logs = await findAllTrainingLogs();
     } else {
         const animals = await findAnimalsByOwner({id: userId});
-        if (!animals) {
+        if (animals == null) {
             return new Response(
                 JSON.stringify({ error: 'userId is required to retrieve all training logs' }),
                 { status: 400 }
@@ -42,11 +42,12 @@ export const GET = async (req: NextRequest): Promise<Response> => {
         for (const animal of animals) {
             const animalLogs = await findTrainingLogsByAnimal({id: animal._id.toString()});
             animalLogs?.forEach(a => logs.push(a))
+            console.log('Training logs ', logs)
         }
     }
 
     return new Response(
-            JSON.stringify({logs}),
+            JSON.stringify({data: logs || []}),
             { status: 200 }
         );
 }
