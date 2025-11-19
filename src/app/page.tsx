@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function Home() {
   return (
       <main className="flex h-screen min-h-0 overflow-hidden w-full  flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
+        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left z-2">
           <h1 className="max-w-256 text-8xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
             Animal training made
           </h1>
@@ -38,7 +38,7 @@ export default function Home() {
         <div className="w-full flex flex-col justify-center gap-4 text-base font-medium sm:flex-row">
           <p className='text-center'>BOG Developer Bootcamp. All rights reserved</p>
         </div>
-        <Image src="/images/quarterCircle.png" className='absolute bottom-0 left-0' width={360} height={360} alt="style element"/>
+        <Image src="/images/quarterCircle.png" className='absolute bottom-0 left-0 z-0' width={360} height={360} alt="style element"/>
       </main>
   );
 }

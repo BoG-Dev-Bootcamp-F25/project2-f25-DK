@@ -61,9 +61,22 @@ const FormInput = ({
                                 : 'flex-1 text-2xl w-full border-0 border-b-4 border-red-500'
                         }
                     >
-                        {dropdownOptions.keys().toArray().map((o, i) => {
-                            return <option value={dropdownOptions.get(o)} key={i}>{o}</option>;
-                        })}
+                        <option value="" disabled selected>
+                            {placeholder}
+                        </option>
+                        {dropdownOptions
+                            .keys()
+                            .toArray()
+                            .map((o, i) => {
+                                return (
+                                    <option
+                                        value={dropdownOptions.get(o)}
+                                        key={i}
+                                    >
+                                        {o}
+                                    </option>
+                                );
+                            })}
                     </select>
                 </>
             ) : type == 'checkbox' ? (

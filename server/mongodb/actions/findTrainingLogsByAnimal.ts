@@ -1,5 +1,5 @@
 import connectDB from '..';
-import { Animal, AnimalDocument } from '../models/Animal';
+import { Animal } from '../models/Animal';
 import { TrainingLog, TrainingLogDocument } from '../models/TrainingLog';
 
 

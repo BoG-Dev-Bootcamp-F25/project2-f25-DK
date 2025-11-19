@@ -16,7 +16,7 @@ const createTrainingLog = async (data: TrainingLogType): Promise<TrainingLogDocu
         await newTrainingLog.save();
         return newTrainingLog
     } catch (err) {
-        console.error(`[ERROR]: Error encountered while creating TrainingLog: ${err}`);
+        console.error(`[ERROR]: Error encountered while creating training log : ${err}`);
         return null;
     }
 };

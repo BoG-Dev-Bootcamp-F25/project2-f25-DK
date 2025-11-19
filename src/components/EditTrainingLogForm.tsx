@@ -3,15 +3,19 @@ import { useParams, useRouter } from 'next/navigation';
 import FormInput from './FormInput';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { set } from 'mongoose';
+import { AnimalDocument } from '../../server/mongodb/models/Animal';
 
 type Inputs = {
     title: string;
     animal: string;
-    totHoursTrained: number;
+    hours: number;
     month: number;
     date: number;
     year: number;
-    note: string;
+    image: string;
+    description: string;
 };
 
 const EditTrainingLogForm = () => {
@@ -19,31 +23,76 @@ const EditTrainingLogForm = () => {
     const { id } = params;
     const router = useRouter();
     const today = new Date();
-    console.log(today.getMonth());
+
+    const [editingLog, setEditingLog] = useState<Partial<Inputs>>({});
+    const [animals, setAnimals] = useState<Map<string, number> | null>(null);
+
+    useEffect(() => {
+        const fetchAnimals = async () => {
+            try {
+                const response = await fetch(`/api/animal`);
+                const animals = (await response.json()).data;
+                setAnimals(
+                    new Map(animals.map((a: AnimalDocument) => [a.name, a._id]))
+                );
+            } catch (error) {}
+        };
+        if (animals == null) {
+            fetchAnimals();
+        }
+    }, [animals]);
+
+    useEffect(() => {
+        const fetchTrainingLog = async () => {
+            try {
+                const response = await fetch(`/api/training-log/${1}`);
+                setEditingLog((await response.json()).data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        if (id) {
+            fetchTrainingLog();
+        }
+    }, [id]);
+
+    let defaults: Partial<Inputs>;
+    defaults = {
+        hours: editingLog?.hours || 1,
+        month: today.getMonth() + 1,
+        date: today.getDate(),
+        year: today.getFullYear(),
+    };
 
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors },
     } = useForm<Inputs>({
-        defaultValues: {
-            totHoursTrained: 1,
-            month: today.getMonth() + 1,
-            date: today.getDate(),
-            year: today.getFullYear(),
-        },
+        defaultValues: defaults,
     });
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
         // TODO: Use the authenticated user's ID to get the list of animals for the user.
-        if (id) { // edit existing training log
+        if (id) {
+            // edit existing training log
+        } else {
+            //create new training log
 
-            
-        } else { //create new training log
-
+            try {
+                const response = await fetch('/api/training-log', {
+                    method: 'POST',
+                    credentials: 'include',
+                    body: JSON.stringify(data),
+                });
+            } catch (err) {
+                setError('root.serverError', {
+                    message: 'Failed to add a new training log entry',
+                });
+            }
         }
-        console.log('Form data', data);
     };
 
     return (
@@ -60,8 +109,10 @@ const EditTrainingLogForm = () => {
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
                         {...register('title', { required: true })}
                     />
-                    {errors.title?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Title is required</p>
+                    {errors.title?.type === 'required' && (
+                        <p className="pl-4 text-red-400" role="alert">
+                            Title is required
+                        </p>
                     )}
                 </div>
                 <div className="col-span-3">
@@ -70,15 +121,15 @@ const EditTrainingLogForm = () => {
                         placeholder="Select Animal"
                         type="dropdown"
                         dropdownOptions={
-                            new Map([
-                                ['Lucy - Golden Retriever', '2133'],
-                            ])
+                            animals == null ? new Map([]) : animals
                         }
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
                         {...register('animal', { required: true })}
                     />
-                    {errors.animal?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Animal is required</p>
+                    {errors.animal?.type === 'required' && (
+                        <p className="pl-4 text-red-400" role="alert">
+                            Animal is required
+                        </p>
                     )}
                 </div>
                 <div className="col-span-3">
@@ -87,13 +138,15 @@ const EditTrainingLogForm = () => {
                         placeholder="Total hours trained"
                         type="number"
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
-                        {...register('totHoursTrained', {
+                        {...register('hours', {
                             required: true,
                             min: 1,
                         })}
                     />
-                    {errors.totHoursTrained?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Total hours trained is required</p>
+                    {errors.hours?.type === 'required' && (
+                        <p className="pl-4 text-red-400" role="alert">
+                            Hours trained is required
+                        </p>
                     )}
                 </div>
                 <div>
@@ -120,8 +173,10 @@ const EditTrainingLogForm = () => {
                         className="flex-1 p-4 mt-4 text-2xl w-full rounded-lg"
                         {...register('month', { required: true })}
                     />
-                    {errors.month?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Month is required</p>
+                    {errors.month?.type === 'required' && (
+                        <p className="pl-4 text-red-400" role="alert">
+                            Month is required
+                        </p>
                     )}
                 </div>
                 <div>
@@ -136,8 +191,10 @@ const EditTrainingLogForm = () => {
                             max: 31,
                         })}
                     />
-                    {errors.date?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Date is required</p>
+                    {errors.date?.type === 'required' && (
+                        <p className="pl-4 text-red-400" role="alert">
+                            Date is required
+                        </p>
                     )}
                 </div>
 
@@ -149,26 +206,38 @@ const EditTrainingLogForm = () => {
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
                         {...register('year', { required: true })}
                     />
-                    {errors.year?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Year is required</p>
+                    {errors.year?.type === 'required' && (
+                        <p className="pl-4 text-red-400" role="alert">
+                            Year is required
+                        </p>
                     )}
                 </div>
 
                 <div className="col-span-3">
                     <FormInput
-                        label="Note"
-                        placeholder="Title"
+                        label="Description"
+                        placeholder="Description"
                         type="textarea"
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
-                        {...register('note', { required: true })}
+                        {...register('description', { required: true })}
                     />
-                    {errors.note?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Password is required</p>
+                    {errors.description?.type === 'required' && (
+                        <p className="pl-4 text-red-400" role="alert">
+                            Please enter a description to describe training
+                        </p>
                     )}
                 </div>
                 <div className="mt-2 flex gap-6 col-span-3">
-                    <Link className="px-4 text-center max-w-[256px] w-full py-2 text-2xl text-white bg-red-600 rounded-xl" href="/dashboard/training-logs">Cancel</Link>
-                    <button type="submit" className="px-4 max-w-[256px] w-full py-2 text-2xl text-white bg-red-600 rounded-xl">
+                    <Link
+                        className="px-4 text-center max-w-[256px] w-full py-2 text-2xl text-white bg-red-600 rounded-xl"
+                        href="/dashboard/training-logs"
+                    >
+                        Cancel
+                    </Link>
+                    <button
+                        type="submit"
+                        className="px-4 max-w-[256px] w-full py-2 text-2xl text-white bg-red-600 rounded-xl"
+                    >
                         Save
                     </button>
                 </div>

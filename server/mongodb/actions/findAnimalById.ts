@@ -8,11 +8,11 @@ const findAnimalById = async (
         await connectDB();
         const animal = await Animal.findById(id).exec();
         if (!animal) {
-            throw new Error('User could not be found with the given email');
+            throw new Error(`Animal with ID ${id} could not be found.`);
         }
         return animal;
     } catch (err) {
-        console.error(`[ERROR]: Error encountered while creating user: ${err}`);
+        console.error(`[ERROR]: Error encountered while searching for animal: ${err}`);
         return null;
     }
 };
