@@ -10,7 +10,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     const {data: session, status } = useSession({ required: true });
-    console.log(session)
+    console.log('Active session data ', session)
 
     return (
         <div className="h-full flex-1 flex flex-row overflow-hidden">

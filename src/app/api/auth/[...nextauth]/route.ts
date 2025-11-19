@@ -1,6 +1,13 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+type User = {
+    fullName: string;
+    email: string;
+    password: string;
+    admin: boolean;
+};
+
 const providers = [
     CredentialsProvider({
         // The name to display on the sign in form (e.g. 'Sign in with...')
@@ -33,10 +40,7 @@ const providers = [
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(req.body),
                 });
-                console.log(res);
-                console.log(res);
                 const respBody = await res.json();
-                console.log(respBody);
                 if (res.status == 200) {
                     return respBody;
                 }
@@ -54,17 +58,22 @@ const handler = NextAuth({
     callbacks: {
         async jwt({ token, user }) {
             console.log('JWT callback user ', user)
+            const userData = user as any;
             if (user) {
-                // Add custom properties from the user object to the token
-                token.admin = (user as any).admin;
+                token.name = userData.fullName;
+                token.admin = userData.admin;
             }
+            console.log('Token ', token)
             return token;
         },
         async session({ session, token }) {
             console.log('Session data ', session);
+          
             // Add custom properties from the token to the session user object
-            if (session.user) {
-                (session.user as any).admin = token.admin;
+            if (token) {
+                (session.user as any).fullName = token?.name;
+                (session.user as any).email = token?.email;
+                (session.user as any).admin = token?.admin;
             }
             return session;
         },
