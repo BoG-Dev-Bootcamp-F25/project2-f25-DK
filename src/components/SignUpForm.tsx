@@ -48,7 +48,7 @@ const SignUpForm = () => {
     };
 
     return (
-        <div className="w-[700px] h-860px min-h-0 overflow-hidden flex flex-col">
+        <div className="w-[700px] h-860px min-h-0 overflow-hidden flex flex-col z-20">
             <form
                 className="h-full min-h-0 overflow-hidden flex flex-col"
                 onSubmit={handleSubmit(onSubmit)}

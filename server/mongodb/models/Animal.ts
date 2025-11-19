@@ -1,35 +1,40 @@
 import mongoose, { HydratedDocument, InferSchemaType, Model, Schema, model, models } from "mongoose";
 
-const userSchema = new Schema({
-	fullName: {
+const animalSchema = new Schema({
+	name: {
 		type: String,
 		required: true,
 	},
-    email: {
-        type: String,
-        required: true,
-        
-    },
-    password: {
+    breed: {
         type: String,
         required: true,
     },
-    admin : {
-        type: Boolean,
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    hoursTrained: {
+        type: Number,
+        required: true
+    },
+    profilePicture: {
+        type: String,
+        required: true,
     }
 });
 
-export const User: Model<InferSchemaType<typeof userSchema>> = models.User ?? model('User', userSchema);
+export const Animal: Model<InferSchemaType<typeof animalSchema>> = models.animal ?? model('animal', animalSchema);
 
 /**
  * Extracts the “plain” shape of your schema—
  * just the fields you defined, without Mongoose’s built-in methods or `_id`.
  */
-export type UserType = InferSchemaType<typeof userSchema>;
+export type AnimalType = InferSchemaType<typeof animalSchema>;
 
 /**
  * Represents a fully “hydrated” Mongoose document:
  * your fields plus all of Mongoose’s methods and metadata
  * (e.g. `_id`, `save()`, `populate()`, etc.).
  */
-export type UserDocument = HydratedDocument<UserType>;
+export type AnimalDocument = HydratedDocument<AnimalType>;

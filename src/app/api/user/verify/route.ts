@@ -4,21 +4,24 @@ import argon2 from 'argon2';
 
 export const POST = async (req: NextRequest): Promise<Response> => {
     const { email, password } = await req.json();
-    console.log('Request email ', email)
+    console.log('Request email ', email);
 
     // lookup in database with encrypted password
     const user = await findUserByEmail({ email });
+    console.log('User from database ', user?.toObject());
 
     if (!user) {
         return new Response(
-            JSON.stringify({ error: 'Could not find user with provided email' }),
+            JSON.stringify({
+                error: 'Could not find user with provided email',
+            }),
             { status: 401 }
         );
     }
 
-    const isMatch = await argon2.verify(user.password, password)
+    const isMatch = await argon2.verify(user.password, password);
     if (isMatch) {
-        return new Response(JSON.stringify({ ...user, password: undefined }), {
+        return new Response(JSON.stringify({...user?.toObject()}), {
             status: 200,
         });
     } else {

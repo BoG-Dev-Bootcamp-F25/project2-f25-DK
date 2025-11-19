@@ -24,6 +24,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "mongoose-tsgen": "^9.5.4",
     "react-hook-form": "^7.66.1",
     "tailwindcss": "^4",
     "typescript": "^5"
