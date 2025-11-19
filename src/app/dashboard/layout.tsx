@@ -3,6 +3,7 @@ import NavBar from '@/components/NavBar';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
+import SideBar from '@/components/SideBar';
 
 export default function RootLayout({
     children,
@@ -12,15 +13,16 @@ export default function RootLayout({
     const { status } = useSession({ required: true });
 
     return (
-        <div className="h-full flex-1 flex flex-row overflow-hidden">
-            <div className="min-w-80 h-full overflow-y-auto hidden xl:block bg-zinc-50">
-                <button
+        <div className="h-full flex-1 flex flex-row border-t">
+            <div className="min-w-80 h-full overflow-y-auto hidden xl:block border-r">
+                {/* <button
                     onClick={() => {
                         signOut();
                     }}
                 >
                     Sign Out
-                </button>
+                </button> */}
+                <SideBar/>
             </div>
             <div className="h-full flex-1 min-h-0 overflow-hidden">
                 {children}
