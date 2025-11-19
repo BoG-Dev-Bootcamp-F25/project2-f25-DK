@@ -21,10 +21,9 @@ const LoginForm = () => {
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const result = await signIn('credentials', {
-            redirect: false, // Prevent NextAuth from redirecting automatically
-
             email: data.email,
             password: data.password,
+            callbackUrl: "/dashboard/training-logs"
         });
         console.log(result);
 
@@ -35,10 +34,7 @@ const LoginForm = () => {
                     message: 'Your email or password is incorrect.'
                 })
             }
-        } else {
-            // Login successful, handle redirection or other actions
-            window.location.href = '/dashboard/training-logs';
-        }
+        } 
     };
 
     return (
@@ -59,7 +55,7 @@ const LoginForm = () => {
                     />
                     {errors.email?.type === 'required' && (
                         <p className="pl-4 text-red-500 text-lg" role="alert">
-                            Email name is required
+                            Email is required
                         </p>
                     )}
 

@@ -5,8 +5,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
 
 type Inputs = {
-    title: string;
-    animal: string;
+    animalName: string;
+    breed: string;
     totHoursTrained: number;
     month: number;
     date: number;
@@ -14,7 +14,7 @@ type Inputs = {
     note: string;
 };
 
-const EditTrainingLogForm = () => {
+const EditAnimalForm = () => {
     const params = useParams();
     const { id } = params;
     const router = useRouter();
@@ -47,38 +47,38 @@ const EditTrainingLogForm = () => {
     };
 
     return (
-        <div className="h-full w-4/5">
+        <div className="w-full max-w-6xl">
             <form
-                className="overflow-y-auto m-2 grid grid-cols-3"
+                className="h-full m-2 grid grid-cols-3"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div className="col-span-3">
                     <FormInput
-                        label="Title"
-                        placeholder="Title"
+                        label="Animal Name"
+                        placeholder="Name"
                         type="text"
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
-                        {...register('title', { required: true })}
+                        {...register('animalName', { required: true })}
                     />
-                    {errors.title?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Title is required</p>
+                    {errors.animalName?.type === "required" && (
+                        <p className='pl-4 text-red-400' role="alert">Password is required</p>
                     )}
                 </div>
                 <div className="col-span-3">
                     <FormInput
-                        label="Select Animal"
-                        placeholder="Select Animal"
+                        label="Breed"
+                        placeholder="Breed"
                         type="dropdown"
                         dropdownOptions={
                             new Map([
-                                ['Lucy - Golden Retriever', '2133'],
+                                ['Labrador Retriever', 0],
                             ])
                         }
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
-                        {...register('animal', { required: true })}
+                        {...register('breed', { required: true })}
                     />
-                    {errors.animal?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Animal is required</p>
+                    {errors.breed?.type === "required" && (
+                        <p className='pl-4 text-red-400' role="alert">Password is required</p>
                     )}
                 </div>
                 <div className="col-span-3">
@@ -93,12 +93,12 @@ const EditTrainingLogForm = () => {
                         })}
                     />
                     {errors.totHoursTrained?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Total hours trained is required</p>
+                        <p className='pl-4 text-red-400' role="alert">Password is required</p>
                     )}
                 </div>
                 <div>
                     <FormInput
-                        label="Month"
+                        label="Birth Month"
                         placeholder="Month"
                         type="dropdown"
                         dropdownOptions={
@@ -121,7 +121,7 @@ const EditTrainingLogForm = () => {
                         {...register('month', { required: true })}
                     />
                     {errors.month?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Month is required</p>
+                        <p className='pl-4 text-red-400' role="alert">Password is required</p>
                     )}
                 </div>
                 <div>
@@ -137,7 +137,7 @@ const EditTrainingLogForm = () => {
                         })}
                     />
                     {errors.date?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Date is required</p>
+                        <p className='pl-4 text-red-400' role="alert">Password is required</p>
                     )}
                 </div>
 
@@ -150,7 +150,7 @@ const EditTrainingLogForm = () => {
                         {...register('year', { required: true })}
                     />
                     {errors.year?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Year is required</p>
+                        <p className='pl-4 text-red-400' role="alert">Password is required</p>
                     )}
                 </div>
 
@@ -177,4 +177,4 @@ const EditTrainingLogForm = () => {
     );
 };
 
-export default EditTrainingLogForm;
+export default EditAnimalForm;
