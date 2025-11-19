@@ -1,5 +1,6 @@
 import SignUpForm from "@/components/SignUpForm";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -14,6 +15,22 @@ export default function Home() {
            
           </p>
         </div>
+        <div className="w-full flex flex-col items-center justify-center mt-8 gap-4 sm:flex-row sm:justify-center">
+          <Link
+            href="/signin"
+            className="w-48 text-center p-4 rounded-xl border-2 bg-red-700 text-white text-4xl font-bold cursor-pointer"
+          >
+            Log In
+          </Link>
+
+          <Link
+            href="/signup"
+            className="w-48 text-center p-4 rounded-xl border-2 bg-red-700 text-white text-4xl font-bold cursor-pointer"
+          >
+            Sign Up
+          </Link>
+        </div>
+
         <div className="w-full flex flex-col justify-center gap-4 text-base font-medium sm:flex-row">
           <p className='text-center'>BOG Developer Bootcamp. All rights reserved</p>
         </div>
