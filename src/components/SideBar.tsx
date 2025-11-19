@@ -82,7 +82,7 @@ const SideBar = () => {
     return (
         
         <div>
-            <div className="p-4 h-screen space-y-2">
+            <div className="p-4 h-full space-y-2">
                 {/* --- Navigational Buttons --- */}
                 
                 <SidebarItem 

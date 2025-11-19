@@ -3,6 +3,7 @@ import { useParams, useRouter } from 'next/navigation';
 import FormInput from './FormInput';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 type Inputs = {
     title: string;
@@ -19,11 +20,18 @@ const EditTrainingLogForm = () => {
     const { id } = params;
     const router = useRouter();
     const today = new Date();
+
+    const [animals, setAnimals] = useState([]);
+    
+    useEffect(() => {
+
+    }, [animals])
     console.log(today.getMonth());
 
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors },
     } = useForm<Inputs>({
         defaultValues: {
@@ -34,7 +42,7 @@ const EditTrainingLogForm = () => {
         },
     });
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
         // TODO: Use the authenticated user's ID to get the list of animals for the user.
         if (id) { // edit existing training log
@@ -42,8 +50,15 @@ const EditTrainingLogForm = () => {
             
         } else { //create new training log
 
+            try {
+                const response = await fetch('/api/training-log', {method: 'POST', credentials: 'include', body: JSON.stringify(data)})
+
+            } catch (err) {
+                setError('root.serverError', {message: 'Failed to add a new training log entry'});
+            }
+            
+
         }
-        console.log('Form data', data);
     };
 
     return (

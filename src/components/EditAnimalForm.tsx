@@ -5,9 +5,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
 
 type Inputs = {
-    animalName: string;
+    name: string;
     breed: string;
-    totHoursTrained: number;
+    hoursTrained: number;
     month: number;
     date: number;
     year: number;
@@ -24,24 +24,30 @@ const EditAnimalForm = () => {
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors },
     } = useForm<Inputs>({
         defaultValues: {
-            totHoursTrained: 1,
+            hoursTrained: 1,
             month: today.getMonth() + 1,
             date: today.getDate(),
             year: today.getFullYear(),
         },
     });
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
         // TODO: Use the authenticated user's ID to get the list of animals for the user.
         if (id) { // edit existing training log
 
             
         } else { //create new training log
+            try {
+                const response = await fetch('/api/animal', {method: 'POST', credentials: 'include', body: JSON.stringify(data)})
 
+            } catch (err) {
+                setError('root.serverError', {message: 'Failed to add a new training log entry'});
+            }
         }
         console.log('Form data', data);
     };
@@ -58,10 +64,10 @@ const EditAnimalForm = () => {
                         placeholder="Name"
                         type="text"
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
-                        {...register('animalName', { required: true })}
+                        {...register('name', { required: true })}
                     />
-                    {errors.animalName?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Password is required</p>
+                    {errors.name && (
+                        <p className='pl-4 text-red-400' role="alert">{errors.name.message}</p>
                     )}
                 </div>
                 <div className="col-span-3">
@@ -87,13 +93,13 @@ const EditAnimalForm = () => {
                         placeholder="Total hours trained"
                         type="number"
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
-                        {...register('totHoursTrained', {
+                        {...register('hoursTrained', {
                             required: true,
                             min: 1,
                         })}
                     />
-                    {errors.totHoursTrained?.type === "required" && (
-                        <p className='pl-4 text-red-400' role="alert">Password is required</p>
+                    {errors.hoursTrained  && (
+                        <p className='pl-4 text-red-400' role="alert">{errors.hoursTrained.message}</p>
                     )}
                 </div>
                 <div>

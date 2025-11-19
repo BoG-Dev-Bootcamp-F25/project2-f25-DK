@@ -7,9 +7,9 @@ const createAnimal = async (data: AnimalType): Promise<AnimalDocument | null> =>
 
     try{
         await connectDB();
-        const owner = await User.findById(data.owner._id);
+        const owner = await User.findById(data.owner);
         if (!owner) {
-            throw new Error(`Cannot find user with ID ${data.owner._id}`)
+            throw new Error(`Cannot find user with ID ${data.owner}`)
         }
        
         const newAnimal = new Animal(data);

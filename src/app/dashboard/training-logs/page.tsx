@@ -1,9 +1,29 @@
+"use client";
+
 import LoginForm from '@/components/LoginForm';
 import TrainingLogCard, { mockData } from '@/components/TrainingLogCard';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
-export default function SignInPage() {
+export default function TrainingLogsPage() {
+
+    const {data: session, status } = useSession();
+    const [logs, setLogs] = useState([]);
+
+    console.log('Current session ', session)
+    useEffect(() => {
+      const fetchTrainingLogs = async () => {
+        await fetch('/api/training-log', {method: 'GET', credentials: 'include'}).then((response) => {
+          console.log(response);
+        })
+      }
+      if (session) {
+        fetchTrainingLogs();
+      }
+    }, [logs, session])
+
     return (
             <main className="min-h-full w-full bg-white dark:bg-black flex flex-col">
               <div className='p-8  flex flex-row justify-between items-center'>
