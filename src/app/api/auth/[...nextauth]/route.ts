@@ -62,6 +62,7 @@ const handler = NextAuth({
             if (user) {
                 token.name = userData.fullName;
                 token.admin = userData.admin;
+                token.sub = userData._id;
             }
             console.log('Token ', token)
             return token;
@@ -74,6 +75,7 @@ const handler = NextAuth({
                 (session.user as any).fullName = token?.name;
                 (session.user as any).email = token?.email;
                 (session.user as any).admin = token?.admin;
+                (session.user as any)._id = token?.sub;
             }
             return session;
         },
