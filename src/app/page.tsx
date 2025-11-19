@@ -1,3 +1,7 @@
+"use client";
+import AnimalCard from "@/components/AnimalCard";
+import AnimalForm from "@/components/AnimalForm";
+import SideBar from "@/components/SideBar";
 import SignUpForm from "@/components/SignUpForm";
 import Image from "next/image";
 
