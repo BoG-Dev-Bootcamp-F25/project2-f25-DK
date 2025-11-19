@@ -23,7 +23,7 @@ const LoginForm = () => {
         const result = await signIn('credentials', {
             email: data.email,
             password: data.password,
-            callbackUrl: "/dashboard/training-logs"
+            callbackUrl: '/dashboard/training-logs',
         });
         console.log(result);
 
@@ -31,10 +31,10 @@ const LoginForm = () => {
             if (result?.status == 401) {
                 setError('root.serverError', {
                     type: result.status as any,
-                    message: 'Your email or password is incorrect.'
-                })
+                    message: 'Your email or password is incorrect.',
+                });
             }
-        } 
+        }
     };
 
     return (
@@ -45,7 +45,9 @@ const LoginForm = () => {
             >
                 <h1 className="text-center font-bold text-6xl">Log In</h1>
 
-                {errors?.root?.serverError && <p>{errors.root.message}</p>}
+                {errors?.root?.serverError && (
+                    <p>{errors?.root?.serverError?.message}</p>
+                )}
                 <div className="mt-4 flex-1 flex flex-col justify-around">
                     <FormInput
                         type={'email'}

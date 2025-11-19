@@ -10,12 +10,12 @@ import { AnimalDocument } from '../../server/mongodb/models/Animal';
 type Inputs = {
     title: string;
     animal: string;
-    totHoursTrained: number;
+    hours: number;
     month: number;
     date: number;
     year: number;
     image: string;
-    note: string;
+    description: string;
 };
 
 const EditTrainingLogForm = () => {
@@ -37,7 +37,9 @@ const EditTrainingLogForm = () => {
                 );
             } catch (error) {}
         };
-        fetchAnimals();
+        if (animals == null) {
+            fetchAnimals();
+        }
     }, [animals]);
 
     useEffect(() => {
@@ -57,7 +59,7 @@ const EditTrainingLogForm = () => {
 
     let defaults: Partial<Inputs>;
     defaults = {
-        totHoursTrained: editingLog?.totHoursTrained || 1,
+        hours: editingLog?.hours || 1,
         month: today.getMonth() + 1,
         date: today.getDate(),
         year: today.getFullYear(),
@@ -119,9 +121,7 @@ const EditTrainingLogForm = () => {
                         placeholder="Select Animal"
                         type="dropdown"
                         dropdownOptions={
-                            animals == null
-                                ? new Map([['Loading', '1111']])
-                                : animals
+                            animals == null ? new Map([]) : animals
                         }
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
                         {...register('animal', { required: true })}
@@ -138,14 +138,14 @@ const EditTrainingLogForm = () => {
                         placeholder="Total hours trained"
                         type="number"
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
-                        {...register('totHoursTrained', {
+                        {...register('hours', {
                             required: true,
                             min: 1,
                         })}
                     />
-                    {errors.totHoursTrained?.type === 'required' && (
+                    {errors.hours?.type === 'required' && (
                         <p className="pl-4 text-red-400" role="alert">
-                            Total hours trained is required
+                            Hours trained is required
                         </p>
                     )}
                 </div>
@@ -215,15 +215,15 @@ const EditTrainingLogForm = () => {
 
                 <div className="col-span-3">
                     <FormInput
-                        label="Note"
-                        placeholder="Title"
+                        label="Description"
+                        placeholder="Description"
                         type="textarea"
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
-                        {...register('note', { required: true })}
+                        {...register('description', { required: true })}
                     />
-                    {errors.note?.type === 'required' && (
+                    {errors.description?.type === 'required' && (
                         <p className="pl-4 text-red-400" role="alert">
-                            Password is required
+                            Please enter a description to describe training
                         </p>
                     )}
                 </div>
