@@ -6,7 +6,6 @@ import findAnimalsByOwner from "../../../../server/mongodb/actions/findAnimalsBy
 import { TrainingLogDocument } from "../../../../server/mongodb/models/TrainingLog";
 import findAnimalById from "../../../../server/mongodb/actions/findAnimalById";
 import createTrainingLog from "../../../../server/mongodb/actions/createTrainingLog";
-import updateTrainingLog from "../../../../server/mongodb/actions/updateTrainingLog";
 import { auth } from "@/lib/auth";
 
 export const GET = async (req: NextRequest): Promise<Response> => {
@@ -73,22 +72,6 @@ export const POST = async (req: NextRequest): Promise<Response> => {
 
     const newLog = await createTrainingLog(data);
     
-    return new Response(JSON.stringify(newLog), {status: 200});
+    return new Response(JSON.stringify({data: newLog}), {status: 200});
 };
 
-export const PATCH = async (req: NextRequest): Promise<Response> => {
- 
-    const data = await req.json()
-    const trainingLog = await updateTrainingLog(data);
-
-    if (!trainingLog) {
-        return new Response(
-            JSON.stringify({ error: 'Failed to update training log' }),
-            { status: 400 }
-        );
-    }
-    return new Response(
-            JSON.stringify(trainingLog),
-            { status: 200 }
-        );
-}

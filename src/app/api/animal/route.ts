@@ -29,7 +29,7 @@ export const GET = async (req: NextRequest): Promise<Response> => {
         animals = await findAnimalsByOwner({id: userId});
     }
     return new Response(
-            JSON.stringify({animals}),
+            JSON.stringify({data: animals}),
             { status: 200 }
         );
 }
@@ -51,30 +51,5 @@ export const POST = async (req: NextRequest): Promise<Response> => {
         );
     } 
     
-    return new Response(JSON.stringify(animal), {status: 200});
+    return new Response(JSON.stringify({data: animal}), {status: 200});
 };
-
-export const PATCH = async (req: NextRequest): Promise<Response> => {
- 
-    const session = await auth();
-
-    if (!session) {
-       return new Response(
-            JSON.stringify({ error: 'You must be logged in to make this request' }),
-            { status: 401 }
-        ); 
-    }
-    const data = await req.json()
-    const animal = await updateAnimal(data);
-
-    if (!animal) {
-        return new Response(
-            JSON.stringify({ error: 'Failed to update animal' }),
-            { status: 400 }
-        );
-    }
-    return new Response(
-            JSON.stringify(animal),
-            { status: 200 }
-        );
-}
