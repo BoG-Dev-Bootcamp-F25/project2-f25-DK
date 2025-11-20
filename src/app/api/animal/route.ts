@@ -28,6 +28,7 @@ export const GET = async (req: NextRequest): Promise<Response> => {
     } else {
         animals = await findAnimalsByOwner({id: userId});
     }
+    // console.log(JSON.stringify({data: animals}))
     return new Response(
             JSON.stringify({data: animals}),
             { status: 200 }
@@ -40,7 +41,6 @@ export const POST = async (req: NextRequest): Promise<Response> => {
     const session = await auth();
     const userId = (session?.user as any)._id;
     data.owner = userId;
-    data.profilePicture = "/images/appLogo.png"
 
     const animal = await createAnimal(data);
 
