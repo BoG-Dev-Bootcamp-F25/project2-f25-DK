@@ -63,6 +63,7 @@ export default function AdminAnimalsPage() {
                         </div>
                     );
                 })}
+                {!isLoading && animals.length == 0 && <p>No animals yet!</p>}
             </div>
         </main>
     );

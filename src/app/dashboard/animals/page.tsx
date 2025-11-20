@@ -56,12 +56,18 @@ export default function AnimalsPage() {
             <div className="mt-8 mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1">
                 {animals.map((a, i) => {
                     return (
-                        <div className="flex items-center justify-center">
-                            <AnimalCard data={a} key={i} />
+                        <div
+                            className="flex items-center justify-center"
+                            key={i}
+                        >
+                            <AnimalCard data={a} />
                         </div>
                     );
                 })}
             </div>
+            {!isLoading && animals.length == 0 && (
+                <p className="text-center text-xl">No animals yet!</p>
+            )}
         </main>
     );
 }

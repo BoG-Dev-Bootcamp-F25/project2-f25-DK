@@ -3,6 +3,7 @@ import { useParams, useRouter } from 'next/navigation';
 import FormInput from './FormInput';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
+import { ToastContainer } from 'react-toastify';
 
 type Inputs = {
     name: string;
@@ -69,6 +70,7 @@ const EditAnimalForm = () => {
                 className="h-full m-2 grid grid-cols-3"
                 onSubmit={handleSubmit(onSubmit)}
             >
+                <ToastContainer />
                 <div className="col-span-3">
                     <FormInput
                         label="Animal Name"

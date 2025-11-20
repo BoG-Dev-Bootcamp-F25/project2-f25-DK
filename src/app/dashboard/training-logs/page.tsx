@@ -76,6 +76,9 @@ export default function TrainingLogsPage() {
                         />
                     ))
                 )}
+                {!isLoading && logs.length == 0 && (
+                    <p className="text-xl">No training logs yet!</p>
+                )}
             </div>
         </main>
     );

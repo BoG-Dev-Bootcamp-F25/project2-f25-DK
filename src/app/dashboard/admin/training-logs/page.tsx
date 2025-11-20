@@ -56,6 +56,7 @@ export default function AdminTrainingLogsPage() {
                         />
                     ))
                 )}
+                {!isLoading && logs.length == 0 && <p>No training logs yet!</p>}
             </div>
         </main>
     );

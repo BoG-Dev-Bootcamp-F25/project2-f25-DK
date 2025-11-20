@@ -3,7 +3,7 @@ import Link from 'next/link';
 import FormInput from './FormInput';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import router from 'next/router';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 type Inputs = {
     fullName: string;
@@ -17,6 +17,7 @@ const SignUpForm = () => {
     const {
         register,
         handleSubmit,
+        reset,
         setError,
         formState: { errors },
     } = useForm<Inputs>({ defaultValues: { admin: false } });
@@ -35,32 +36,35 @@ const SignUpForm = () => {
         })
             .then(async (response) => {
                 const respBody = await response.json();
+                console.log('Create user response ', respBody);
                 if (response.ok) {
                     toast('User created successfully!');
+                    reset();
                 } else {
-                    setError('root.serverError', { message: respBody });
+                    setError('root.serverError', { message: respBody.error });
                 }
             })
             .catch((error) => {
                 console.log(error);
             });
     };
-
+    console.log(errors);
     return (
-        <div className="w-[700px] h-860px min-h-0 overflow-hidden flex flex-col z-20">
-            {errors?.root?.serverError && (
-                <p className="p-4 text-lg text-red-400">
-                    {errors?.root?.serverError.message}
-                </p>
-            )}
+        <div className="w-[700px] h-860px min-h-0 overflow-hidden flex flex-col z-20 bg-white">
             <form
                 className="h-full min-h-0 overflow-hidden flex flex-col"
                 onSubmit={handleSubmit(onSubmit)}
             >
+                <ToastContainer />
                 <h1 className="text-center font-bold text-6xl">
                     Create Account
                 </h1>
 
+                {errors?.root?.serverError && (
+                    <p className="p-4 text-center text-2xl text-red-400">
+                        {errors?.root?.serverError.message}
+                    </p>
+                )}
                 <div className="h-full overflow-auto mt-4 flex-1 flex flex-col justify-around">
                     <FormInput
                         type={'text'}
@@ -69,7 +73,7 @@ const SignUpForm = () => {
                         {...register('fullName', { required: true })}
                     />
                     {errors.fullName?.type === 'required' && (
-                        <p className="pl-4" role="alert">
+                        <p className="pl-4 text-2xl text-red-400" role="alert">
                             Full name is required
                         </p>
                     )}
@@ -80,7 +84,7 @@ const SignUpForm = () => {
                         {...register('email', { required: true })}
                     />
                     {errors.email?.type === 'required' && (
-                        <p className="pl-4" role="alert">
+                        <p className="pl-4 text-2xl text-red-400" role="alert">
                             Email name is required
                         </p>
                     )}
@@ -89,11 +93,19 @@ const SignUpForm = () => {
                         type={'password'}
                         label={'Password'}
                         placeholder="Password"
-                        {...register('password', { required: true })}
+                        {...register('password', {
+                            required: true,
+                            minLength: 8,
+                        })}
                     />
                     {errors.password?.type === 'required' && (
-                        <p className="pl-4" role="alert">
+                        <p className="pl-4 text-2xl text-red-400" role="alert">
                             Password is required
+                        </p>
+                    )}
+                    {errors.password?.type === 'minLength' && (
+                        <p className="pl-4 text-2xl text-red-400" role="alert">
+                            Password must be at least 8 characters long
                         </p>
                     )}
                     <FormInput
@@ -103,7 +115,7 @@ const SignUpForm = () => {
                         {...register('confirmPassword', { required: true })}
                     />
                     {errors.confirmPassword?.type === 'required' && (
-                        <p className="pl-4" role="alert">
+                        <p className="pl-4 text-2xl text-red-400" role="alert">
                             You must confirm your password
                         </p>
                     )}
