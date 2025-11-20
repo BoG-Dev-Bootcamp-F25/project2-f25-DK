@@ -1,7 +1,35 @@
+'use client';
 import Link from 'next/link';
 import Image from 'next/image';
+import { AnimalDocument } from '../../../../../server/mongodb/models/Animal';
+import { useEffect, useState } from 'react';
+import AnimalCard from '@/components/AnimalCard';
 
 export default function AdminAnimalsPage() {
+    const [isLoading, setIsLoading] = useState(true);
+    const [animals, setAnimals] = useState<AnimalDocument[]>([]);
+
+    useEffect(() => {
+        const fetchAnimals = async () => {
+            try {
+                const response = await fetch('/api/animal?all=true', {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                const respBody = await response.json();
+                const animals: AnimalDocument[] = respBody?.data;
+
+                if (animals != undefined) {
+                    setAnimals(animals);
+                }
+                setIsLoading(false);
+            } catch (error) {
+                setIsLoading(false);
+            }
+        };
+
+        fetchAnimals();
+    }, [isLoading]);
     return (
         <main className="min-h-full w-full bg-white dark:bg-black flex flex-col">
             <div className="p-8  flex flex-row justify-between items-center">
@@ -24,7 +52,19 @@ export default function AdminAnimalsPage() {
             </div>
 
             <hr />
-            <div className="mt-8 mx-4 grid xl:grid-cols-3 gap-1"></div>
+            <div className="mt-8 mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {animals.map((a, i) => {
+                    return (
+                        <div
+                            className="flex items-center justify-center "
+                            key={i}
+                        >
+                            <AnimalCard data={a} />
+                        </div>
+                    );
+                })}
+                {!isLoading && animals.length == 0 && <p>No animals yet!</p>}
+            </div>
         </main>
     );
 }

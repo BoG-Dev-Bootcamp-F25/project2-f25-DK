@@ -26,20 +26,20 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-
-                <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-                >
-                    <SessionProvider>
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+                <SessionProvider>
                     <div className="flex flex-col h-screen bg-zinc-50 font-sans dark:bg-black">
-                        <div className="min-h-24">
+                        <div className="min-h-24 border-0">
                             <NavBar />
                         </div>
-                        <div className="flex-1 min-h-0 overflow-hidden">{children}</div>
+                        <div className="flex-1 min-h-0 border-0 overflow-hidden">
+                            {children}
+                        </div>
                     </div>
-                    </SessionProvider>
-                </body>
-
+                </SessionProvider>
+            </body>
         </html>
     );
 }

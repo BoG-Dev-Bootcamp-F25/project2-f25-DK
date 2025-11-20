@@ -3,6 +3,7 @@ import Link from 'next/link';
 import FormInput from './FormInput';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import router from 'next/router';
+import { toast, ToastContainer } from 'react-toastify';
 
 type Inputs = {
     fullName: string;
@@ -16,6 +17,7 @@ const SignUpForm = () => {
     const {
         register,
         handleSubmit,
+        reset,
         setError,
         formState: { errors },
     } = useForm<Inputs>({ defaultValues: { admin: false } });
@@ -27,36 +29,42 @@ const SignUpForm = () => {
             return;
         }
 
-        // TODO: check if email is a valid email
-
         await fetch('/api/user/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
         })
-            .then((response) => {
-                if (response.status == 200) {
-                    router.push('/signin');
+            .then(async (response) => {
+                const respBody = await response.json();
+                console.log('Create user response ', respBody);
+                if (response.ok) {
+                    toast('User created successfully!');
+                    reset();
+                } else {
+                    setError('root.serverError', { message: respBody.error });
                 }
             })
             .catch((error) => {
                 console.log(error);
             });
-        // - Second handles creating a user using your backend code
-        // - If creating the user was successful then it routes to the Training Logs Dashboard
-        // - If creating the user was unsuccessful then there is some display to inform the user of the issue and remains on the create account page
     };
-
+    console.log(errors);
     return (
-        <div className="w-[700px] h-860px min-h-0 overflow-hidden flex flex-col z-20">
+        <div className="w-[700px] h-860px min-h-0 overflow-hidden flex flex-col z-20 bg-white">
             <form
                 className="h-full min-h-0 overflow-hidden flex flex-col"
                 onSubmit={handleSubmit(onSubmit)}
             >
+                <ToastContainer />
                 <h1 className="text-center font-bold text-6xl">
                     Create Account
                 </h1>
 
+                {errors?.root?.serverError && (
+                    <p className="p-4 text-center text-2xl text-red-400">
+                        {errors?.root?.serverError.message}
+                    </p>
+                )}
                 <div className="h-full overflow-auto mt-4 flex-1 flex flex-col justify-around">
                     <FormInput
                         type={'text'}
@@ -65,7 +73,7 @@ const SignUpForm = () => {
                         {...register('fullName', { required: true })}
                     />
                     {errors.fullName?.type === 'required' && (
-                        <p className="pl-4" role="alert">
+                        <p className="pl-4 text-2xl text-red-400" role="alert">
                             Full name is required
                         </p>
                     )}
@@ -76,7 +84,7 @@ const SignUpForm = () => {
                         {...register('email', { required: true })}
                     />
                     {errors.email?.type === 'required' && (
-                        <p className="pl-4" role="alert">
+                        <p className="pl-4 text-2xl text-red-400" role="alert">
                             Email name is required
                         </p>
                     )}
@@ -85,11 +93,19 @@ const SignUpForm = () => {
                         type={'password'}
                         label={'Password'}
                         placeholder="Password"
-                        {...register('password', { required: true })}
+                        {...register('password', {
+                            required: true,
+                            minLength: 8,
+                        })}
                     />
                     {errors.password?.type === 'required' && (
-                        <p className="pl-4" role="alert">
+                        <p className="pl-4 text-2xl text-red-400" role="alert">
                             Password is required
+                        </p>
+                    )}
+                    {errors.password?.type === 'minLength' && (
+                        <p className="pl-4 text-2xl text-red-400" role="alert">
+                            Password must be at least 8 characters long
                         </p>
                     )}
                     <FormInput
@@ -99,7 +115,7 @@ const SignUpForm = () => {
                         {...register('confirmPassword', { required: true })}
                     />
                     {errors.confirmPassword?.type === 'required' && (
-                        <p className="pl-4" role="alert">
+                        <p className="pl-4 text-2xl text-red-400" role="alert">
                             You must confirm your password
                         </p>
                     )}

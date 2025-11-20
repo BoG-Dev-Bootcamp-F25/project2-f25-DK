@@ -55,13 +55,23 @@ export default function AnimalsPage() {
     }, [session]);
 
     return (
-            <main className="min-h-full w-full bg-white dark:bg-black flex flex-col">
-              <div className='p-8  flex flex-row justify-between items-center'>
+        <main className="min-h-full w-full bg-white dark:bg-black flex flex-col">
+            <div className="p-8  flex flex-row justify-between items-center">
                 <h1 className="text-left text-2xl font-bold text-neutral-600">
                     Animals
                 </h1>
-                <Link className=' xl:mr-16' href="/dashboard/animals/new">
-                  <div className='flex flex-row gap-2'><Image width={24} height={24} src="/images/createNewLogo.png" alt="create new animal" /> <span className='font-bold text-neutral-400 '>Create New</span></div>
+                <Link className=" xl:mr-16" href="/dashboard/animals/new">
+                    <div className="flex flex-row gap-2">
+                        <Image
+                            width={24}
+                            height={24}
+                            src="/images/createNewLogo.png"
+                            alt="create new animal"
+                        />{' '}
+                        <span className="font-bold text-neutral-400 ">
+                            Create New
+                        </span>
+                    </div>
                 </Link>
               </div>
                 
