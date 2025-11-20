@@ -6,7 +6,6 @@ import { Animal } from '../server/mongodb/models/Animal';
 
 async function globalSetup(config: FullConfig) {
     // clear the database and seed with users
-    console.log('MONGO_DB ', process.env.MONGO_DB);
     try {
         await connectDB();
         await User.collection.drop();
