@@ -1,6 +1,7 @@
 import test, { expect } from '@playwright/test';
 test.describe.serial('training log tests ', () => {
-    test.beforeAll(async ({ request, page }) => {
+    test.beforeAll(async ({ browser }) => {
+        const page = await browser.newPage();
         await page.goto('/');
         // Expect a title "to contain" a substring.
         await page.getByRole('link', { name: 'app logo Progress' }).click();
