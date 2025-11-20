@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react';
 
 type LogData = {
   _id: string;
-  user: string;
+  user: { _id: string; fullName: string };
   name: string;
   animal_name: string;
   breed: string;
@@ -19,7 +19,10 @@ type LogData = {
 
 const mapDbAnimalToLogData = (dbAnimal: any): LogData => ({
   _id: dbAnimal._id,
-  user: dbAnimal.owner,
+  user: {
+    _id: dbAnimal.owner._id,
+    fullName: dbAnimal.owner.fullName
+  },
   name: dbAnimal.name,
   animal_name: dbAnimal.name,
   breed: dbAnimal.breed,

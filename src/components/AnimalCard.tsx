@@ -7,7 +7,7 @@ import Link from "next/link";
 
 type LogData = {
     _id: ObjectId | string;
-    user: ObjectId | string;
+    user: { _id: ObjectId | string; fullName: string }
     name: string;
     animal_name: string;
     breed: string;
@@ -28,7 +28,8 @@ const AnimalCard = ({ data }: { data: LogData }) => {
                         {data.animal_name + " - " + data.breed}
                     </div>
                     <div className="text-sm text-gray-700 truncate">
-                        {data.name + " - Trained " + data.hours + " hours"}
+                        {data.user.fullName +
+     " - Trained " + data.hours + " hours"}
                     </div>
                 </div>
             </div>
