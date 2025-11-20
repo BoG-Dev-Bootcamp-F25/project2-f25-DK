@@ -1,5 +1,6 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
+import { toast, ToastContainer, ToastContentProps } from 'react-toastify';
 import FormInput from './FormInput';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
@@ -55,6 +56,7 @@ const EditTrainingLogForm = () => {
     const {
         register,
         handleSubmit,
+        reset,
         setError,
         formState: { errors },
     } = useForm<Inputs>({
@@ -111,7 +113,9 @@ const EditTrainingLogForm = () => {
                 });
                 const respBody = await response.json();
 
-                if (!response.ok) {
+                if (response.ok) {
+                    toast('Training log updated successfully.');
+                } else {
                     setError('root.serverError', {
                         message: respBody.error,
                     });
@@ -133,7 +137,9 @@ const EditTrainingLogForm = () => {
 
                 const respBody = await response.json();
 
-                if (!response.ok) {
+                if (response.ok) {
+                    toast('Training log created successfully.');
+                } else {
                     setError('root.serverError', {
                         message: respBody.error,
                     });
@@ -148,6 +154,7 @@ const EditTrainingLogForm = () => {
 
     return (
         <div className="h-full w-4/5">
+            <ToastContainer />
             <form
                 className="overflow-y-auto m-2 grid grid-cols-3"
                 onSubmit={handleSubmit(onSubmit)}

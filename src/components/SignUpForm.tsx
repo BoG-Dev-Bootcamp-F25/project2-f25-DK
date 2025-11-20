@@ -3,6 +3,7 @@ import Link from 'next/link';
 import FormInput from './FormInput';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import router from 'next/router';
+import { toast } from 'react-toastify';
 
 type Inputs = {
     fullName: string;
@@ -27,28 +28,31 @@ const SignUpForm = () => {
             return;
         }
 
-        // TODO: check if email is a valid email
-
         await fetch('/api/user/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
         })
-            .then((response) => {
-                if (response.status == 200) {
-                    router.push('/signin');
+            .then(async (response) => {
+                const respBody = await response.json();
+                if (response.ok) {
+                    toast('User created successfully!');
+                } else {
+                    setError('root.serverError', { message: respBody });
                 }
             })
             .catch((error) => {
                 console.log(error);
             });
-        // - Second handles creating a user using your backend code
-        // - If creating the user was successful then it routes to the Training Logs Dashboard
-        // - If creating the user was unsuccessful then there is some display to inform the user of the issue and remains on the create account page
     };
 
     return (
         <div className="w-[700px] h-860px min-h-0 overflow-hidden flex flex-col z-20">
+            {errors?.root?.serverError && (
+                <p className="p-4 text-lg text-red-400">
+                    {errors?.root?.serverError.message}
+                </p>
+            )}
             <form
                 className="h-full min-h-0 overflow-hidden flex flex-col"
                 onSubmit={handleSubmit(onSubmit)}

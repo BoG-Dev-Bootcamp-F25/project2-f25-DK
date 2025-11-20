@@ -132,7 +132,7 @@ const SideBar = () => {
                         {session?.user?.name?.charAt(0)}
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col justify-between">
                         <div className="text-lg font-semibold truncate">
                             {session?.user?.name}
                         </div>
