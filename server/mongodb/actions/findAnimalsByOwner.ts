@@ -12,7 +12,7 @@ const findAnimalsByOwner = async (
             throw new Error(`User could not be found with the ID ${id}`);
         }
 
-        const animals = await Animal.find({owner: user._id}).exec();
+        const animals = await Animal.find({owner: user._id}).populate('owner', 'fullName email').exec();
         return animals;
     } catch (err) {
         console.error(`[ERROR]: Error encountered while creating user: ${err}`);

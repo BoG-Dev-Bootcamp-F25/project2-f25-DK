@@ -28,7 +28,7 @@ const EditAnimalForm = () => {
     } = useForm<Inputs>({
         defaultValues: {
             hoursTrained: 1,
-            profilePicture: '/images/appLogo.png',
+            profilePicture: 'https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/golden-retriever-dog-breed-info.jpeg',
         },
     });
 
@@ -54,6 +54,7 @@ const EditAnimalForm = () => {
                 toast('Animal created successfully!');
                 reset();
             } catch (err) {
+                console.log
                 setError('root.serverError', {
                     message: 'Failed to create a new animal',
                 });
