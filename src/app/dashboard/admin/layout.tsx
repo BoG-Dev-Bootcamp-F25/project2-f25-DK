@@ -13,7 +13,7 @@ export default function RootLayout({
     const isAdmin = session?.user && (session?.user as any).admin;
 
     return isAdmin ? (
-        <div className="h-full">{children}</div>
+        <div className="h-screen flex flex-col">{children}</div>
     ) : (
         <div className="h-full flex flex-row justify-center items-center">
             <p className="rounded-2xl bg-red-300 p-4">

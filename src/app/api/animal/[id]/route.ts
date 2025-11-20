@@ -52,7 +52,7 @@ export const PATCH = async (
         );
     }
 
-    const id = params;
+    const { id } = await params; 
     const data = await req.json();
     const animal = await updateAnimal({ ...data, _id: id });
 
