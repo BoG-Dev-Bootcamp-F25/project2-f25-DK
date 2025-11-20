@@ -8,6 +8,7 @@ export const GET = async (
     { params }: { params: { id: string } }
 ): Promise<Response> => {
     const session = await auth();
+    const { id } = await params;
 
     if (!session) {
         return new Response(
@@ -19,9 +20,8 @@ export const GET = async (
             }
         );
     }
-    const { id } = params;
 
-    const log = findTrainingLogById({ id });
+    const log = await findTrainingLogById({ id });
 
     if (log) {
         return new Response(JSON.stringify({ data: log || undefined }), {

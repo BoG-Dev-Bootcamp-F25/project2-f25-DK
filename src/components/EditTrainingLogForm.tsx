@@ -22,7 +22,7 @@ const EditTrainingLogForm = () => {
     const { id } = params;
     const today = new Date();
 
-    const [editingLog, setEditingLog] = useState<Partial<Inputs>>({});
+    const [editingLog, setEditingLog] = useState<Partial<Inputs> | null>(null);
     const [animals, setAnimals] = useState<Map<string, number> | null>(null);
 
     useEffect(() => {
@@ -33,35 +33,23 @@ const EditTrainingLogForm = () => {
                 setAnimals(
                     new Map(animals.map((a: AnimalDocument) => [a.name, a._id]))
                 );
-            } catch (error) {}
+            } catch (error) {
+                console.error(error);
+            }
         };
         if (animals == null) {
             fetchAnimals();
         }
     }, [animals]);
 
-    useEffect(() => {
-        const fetchTrainingLog = async () => {
-            try {
-                const response = await fetch(`/api/training-log/${1}`);
-                setEditingLog((await response.json()).data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        if (id) {
-            fetchTrainingLog();
+    const fetchTrainingLog = async () => {
+        try {
+            const response = await fetch(`/api/training-log/${id}`);
+            const respBody = await response.json();
+            return respBody.data;
+        } catch (error) {
+            return {};
         }
-    }, [id]);
-
-    let defaults: Partial<Inputs>;
-    defaults = {
-        hours: editingLog?.hours || 1,
-        month: today.getMonth() + 1,
-        date: today.getDate(),
-        year: today.getFullYear(),
-        animal: '',
     };
 
     const {
@@ -70,19 +58,56 @@ const EditTrainingLogForm = () => {
         setError,
         formState: { errors },
     } = useForm<Inputs>({
-        defaultValues: defaults,
+        defaultValues: async () => {
+            try {
+                if (id) {
+                    const defaults = await fetchTrainingLog();
+
+                    const dateStr = defaults.date;
+                    const dateObj = new Date(dateStr);
+
+                    return {
+                        ...defaults,
+                        month: dateObj.getMonth() + 1,
+                        date: dateObj.getDate(),
+                        year: dateObj.getFullYear(),
+                    };
+                }
+                return {
+                    hours: 1,
+                    month: today.getMonth() + 1,
+                    date: today.getDate(),
+                    year: today.getFullYear(),
+                    title: '',
+                    animal: '',
+                    description: '',
+                };
+            } catch (error) {
+                console.error('Error fetching default user data:', error);
+                // Return an empty object or some default fallback values
+                return {
+                    hours: 1,
+                    month: today.getMonth() + 1,
+                    date: today.getDate(),
+                    year: today.getFullYear(),
+                    title: '',
+                    animal: '',
+                    description: '',
+                };
+            }
+        },
     });
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         // TODO: check if date represents a valid Date
         // TODO: Use the authenticated user's ID to get the list of animals for the user.
+
         if (id) {
             // edit existing training log
-
             try {
                 const response = await fetch(`/api/training-log/${id}`, {
                     method: 'PATCH',
-                    body: JSON.stringify(data),
+                    body: JSON.stringify({ ...data, _id: id }),
                 });
                 const respBody = await response.json();
 

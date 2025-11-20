@@ -33,8 +33,8 @@ export const mockData: LogData = {
 const TrainingLogCard = ({ data }: { data: LogData }) => {
     // TODO: fetch data about user and animal
 
-    const [user, setUser] = useState<Partial<UserDocument>>({});
-    const [animal, setAnimal] = useState<Partial<AnimalDocument>>({});
+    const [user, setUser] = useState<Partial<UserDocument> | null>(null);
+    const [animal, setAnimal] = useState<Partial<AnimalDocument> | null>(null);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -100,7 +100,9 @@ const TrainingLogCard = ({ data }: { data: LogData }) => {
                 </div>
                 <div className="flex">
                     <span className="font-bold text-gray-400">
-                        {user.fullName} - Golden Retriever - Lucy
+                        {user ? user.fullName : 'Long Lam'} -{' '}
+                        {animal ? animal.breed : 'Golden Retriever'} -{' '}
+                        {animal ? animal.name : 'Lucy'}
                     </span>
                 </div>
                 <p className="pt-4">{data.description}</p>

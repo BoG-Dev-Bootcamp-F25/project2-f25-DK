@@ -83,7 +83,7 @@ const SideBar = () => {
     };
 
     return (
-        <div>
+        <div className="h-full flex flex-col justify-between">
             <div className="p-4 h-full space-y-2">
                 {/* --- Navigational Buttons --- */}
 
@@ -126,10 +126,10 @@ const SideBar = () => {
                 <hr></hr>
             </div>
 
-            <div className="flex items-center gap-6">
+            <div className="flex items-center m-4 gap-6">
                 <div className="hover:bg-gray-100 flex gap-2 items-center ">
                     <div className="bg-red-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
-                        {'L'}
+                        {session?.user?.name?.charAt(0)}
                     </div>
 
                     <div className="flex flex-col">

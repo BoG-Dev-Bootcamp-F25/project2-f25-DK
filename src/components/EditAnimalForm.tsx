@@ -88,7 +88,12 @@ const EditAnimalForm = () => {
                         label="Breed"
                         placeholder="Breed"
                         type="dropdown"
-                        dropdownOptions={new Map([['Labrador Retriever', 0]])}
+                        dropdownOptions={
+                            new Map([
+                                ['Labrador Retriever', 'Labrador Retriever'],
+                                ['German Shepherd', 'German Shepherd'],
+                            ])
+                        }
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
                         {...register('breed', { required: true })}
                     />

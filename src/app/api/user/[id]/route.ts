@@ -7,6 +7,7 @@ export const GET = async (
     { params }: { params: { id: string } }
 ): Promise<Response> => {
     const session = await auth();
+    const { id } = await params;
 
     if (!session) {
         return new Response(
@@ -18,10 +19,9 @@ export const GET = async (
             }
         );
     }
-    const { id } = params;
 
-    const user = findUserById(id);
-
+    const user = await findUserById(id);
+    console.log('Found user ', user);
     if (user) {
         return new Response(JSON.stringify({ data: user || undefined }), {
             status: 200,
