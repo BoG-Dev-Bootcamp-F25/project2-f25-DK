@@ -61,7 +61,7 @@ const FormInput = ({
                                 : 'flex-1 text-2xl w-full border-0 border-b-4 border-red-500'
                         }
                     >
-                        <option value="" disabled selected>
+                        <option value="" disabled>
                             {placeholder}
                         </option>
                         {dropdownOptions
