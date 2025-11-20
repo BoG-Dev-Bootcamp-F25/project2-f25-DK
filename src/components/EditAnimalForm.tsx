@@ -28,7 +28,8 @@ const EditAnimalForm = () => {
     } = useForm<Inputs>({
         defaultValues: {
             hoursTrained: 1,
-            profilePicture: 'https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/golden-retriever-dog-breed-info.jpeg',
+            profilePicture:
+                'https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/golden-retriever-dog-breed-info.jpeg',
         },
     });
 
@@ -54,7 +55,7 @@ const EditAnimalForm = () => {
                 toast('Animal created successfully!');
                 reset();
             } catch (err) {
-                console.log
+                console.log;
                 setError('root.serverError', {
                     message: 'Failed to create a new animal',
                 });
@@ -62,14 +63,14 @@ const EditAnimalForm = () => {
         }
     };
     return (
-        <div className="w-full max-w-6xl">
+        <div className="h-full w-full max-w-6xl">
             {errors?.root?.serverError && (
                 <p className="p-4 text-lg text-red-400">
                     {errors?.root?.serverError.message}
                 </p>
             )}
             <form
-                className="h-full m-2 grid grid-cols-3"
+                className=" m-2 grid grid-cols-3"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <ToastContainer />
@@ -81,9 +82,9 @@ const EditAnimalForm = () => {
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
                         {...register('name', { required: true })}
                     />
-                    {errors.name && (
+                    {errors.name?.type === 'required' && (
                         <p className="pl-4 text-red-400" role="alert">
-                            {errors.name.message}
+                            Animal name is required
                         </p>
                     )}
                 </div>

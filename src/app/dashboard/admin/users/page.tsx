@@ -32,7 +32,7 @@ export default function AdminUsersPage() {
     }, [isLoading]);
 
     return (
-        <main className="h-full min-h-0 overflow-hidden w-full bg-white dark:bg-black flex flex-col">
+        <main className="h-full min-h-0 overflow-hidden w-full dark:bg-black flex flex-col">
             <div className="p-8  flex flex-row justify-between items-center">
                 <h1 className="text-left text-2xl font-bold text-neutral-600">
                     All Users

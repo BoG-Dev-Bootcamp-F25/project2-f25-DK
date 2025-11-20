@@ -9,7 +9,9 @@ const AnimalCard = ({ data }: { data: AnimalDocument }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch(`/api/user/${data.owner}`);
+                const response = await fetch(
+                    `/api/user/${data.owner._id.toString()}`
+                );
                 const respBody = await response.json();
                 const user = respBody.data;
                 if (user != undefined) {

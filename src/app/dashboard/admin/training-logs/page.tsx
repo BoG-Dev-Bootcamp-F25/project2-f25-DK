@@ -33,7 +33,7 @@ export default function AdminTrainingLogsPage() {
         <main className="h-full w-full  dark:bg-black flex flex-col">
             <div className="p-8  flex flex-row justify-between items-center">
                 <h1 className="text-left text-2xl font-bold text-neutral-600">
-                    All training Logs
+                    All Training Logs
                 </h1>
             </div>
 
