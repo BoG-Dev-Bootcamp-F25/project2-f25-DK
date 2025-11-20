@@ -21,7 +21,7 @@ export const GET = async (
     }
 
     const user = await findUserById(id);
-    console.log('Found user ', user);
+
     if (user) {
         return new Response(JSON.stringify({ data: user || undefined }), {
             status: 200,

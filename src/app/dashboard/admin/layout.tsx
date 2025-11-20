@@ -9,14 +9,16 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const { data: session} = useSession();
+    const { data: session } = useSession();
     const isAdmin = session?.user && (session?.user as any).admin;
 
     return isAdmin ? (
-        <div>{children}</div>
+        <div className="h-full">{children}</div>
     ) : (
-        <div className='h-full flex flex-row justify-center items-center'>
-            <p className='rounded-2xl bg-red-300 p-4'>You are not authorized to view this page</p>
+        <div className="h-full flex flex-row justify-center items-center">
+            <p className="rounded-2xl bg-red-300 p-4">
+                You are not authorized to view this page
+            </p>
         </div>
     );
 }
