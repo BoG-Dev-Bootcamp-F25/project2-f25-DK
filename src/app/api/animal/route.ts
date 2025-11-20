@@ -1,7 +1,5 @@
 import { NextRequest } from 'next/server';
 import createAnimal from '../../../../server/mongodb/actions/createAnimal';
-import updateAnimal from '../../../../server/mongodb/actions/updateAnimal';
-import { getServerSession } from 'next-auth';
 import findAnimals from '../../../../server/mongodb/actions/findAllAnimals';
 import findAnimalsByOwner from '../../../../server/mongodb/actions/findAnimalsByOwner';
 import { auth } from '@/lib/auth';
@@ -50,8 +48,8 @@ export const POST = async (req: NextRequest): Promise<Response> => {
     data.profilePicture = '/images/appLogo.png';
 
     const animals = await findAnimalsByOwner({ id: userId });
-
-    if (animals?.filter((a) => a.name == data.name)) {
+    const animalsMatchingName = animals?.filter((a) => a.name == data.name);
+    if (animalsMatchingName && animalsMatchingName.length > 0) {
         return new Response(
             JSON.stringify({
                 error: 'An animal with this name already exists',
