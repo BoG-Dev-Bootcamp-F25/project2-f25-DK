@@ -4,7 +4,6 @@ import FormInput from './FormInput';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { set } from 'mongoose';
 import { AnimalDocument } from '../../server/mongodb/models/Animal';
 
 type Inputs = {
@@ -21,7 +20,6 @@ type Inputs = {
 const EditTrainingLogForm = () => {
     const params = useParams();
     const { id } = params;
-    const router = useRouter();
     const today = new Date();
 
     const [editingLog, setEditingLog] = useState<Partial<Inputs>>({});
@@ -63,6 +61,7 @@ const EditTrainingLogForm = () => {
         month: today.getMonth() + 1,
         date: today.getDate(),
         year: today.getFullYear(),
+        animal: '',
     };
 
     const {
@@ -75,9 +74,28 @@ const EditTrainingLogForm = () => {
     });
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        // TODO: check if date represents a valid Date
         // TODO: Use the authenticated user's ID to get the list of animals for the user.
         if (id) {
             // edit existing training log
+
+            try {
+                const response = await fetch(`/api/training-log/${id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify(data),
+                });
+                const respBody = await response.json();
+
+                if (!response.ok) {
+                    setError('root.serverError', {
+                        message: respBody.error,
+                    });
+                }
+            } catch (error) {
+                setError('root.serverError', {
+                    message: 'Failed to edit the current training log entry',
+                });
+            }
         } else {
             //create new training log
 
@@ -87,6 +105,14 @@ const EditTrainingLogForm = () => {
                     credentials: 'include',
                     body: JSON.stringify(data),
                 });
+
+                const respBody = await response.json();
+
+                if (!response.ok) {
+                    setError('root.serverError', {
+                        message: respBody.error,
+                    });
+                }
             } catch (err) {
                 setError('root.serverError', {
                     message: 'Failed to add a new training log entry',
