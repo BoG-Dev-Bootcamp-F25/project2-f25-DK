@@ -5,6 +5,7 @@ import AnimalCard from '@/components/AnimalCard';
 import { useEffect, useState } from 'react';
 import { AnimalDocument } from '../../../../server/mongodb/models/Animal';
 import AnimalsGrid from '@/components/AnimalsGrid';
+import { ToastContainer } from 'react-toastify';
 
 export default function AnimalsPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +39,7 @@ export default function AnimalsPage() {
                 <h1 className="text-left text-2xl font-bold text-neutral-600">
                     Animals
                 </h1>
+
                 <Link className=" xl:mr-16" href="/dashboard/animals/new">
                     <div className="flex flex-row gap-2">
                         <Image
