@@ -6,9 +6,31 @@ import { useEffect, useState } from 'react';
 
 import AnimalsGrid from '@/components/AnimalsGrid';
 
+type LogData = {
+  _id: string;
+  user: { _id: string; fullName: string };
+  name: string;
+  animal_name: string;
+  breed: string;
+  hours: number;
+  url: string;
+};
+
+const mapDbAnimalToLogData = (dbAnimal: any): LogData => ({
+  _id: dbAnimal._id,
+  user: {
+    _id: dbAnimal.owner._id,
+    fullName: dbAnimal.owner.fullName
+  },
+  name: dbAnimal.name,
+  animal_name: dbAnimal.name,
+  breed: dbAnimal.breed,
+  hours: dbAnimal.hoursTrained,
+  url: dbAnimal.profilePicture,
+});
 export default function AdminAnimalsPage() {
     const [isLoading, setIsLoading] = useState(true);
-    const [animals, setAnimals] = useState<AnimalDocument[]>([]);
+    const [animals, setAnimals] = useState<LogData[]>([]);
 
     useEffect(() => {
         const fetchAnimals = async () => {
@@ -21,7 +43,7 @@ export default function AdminAnimalsPage() {
                 const animals: AnimalDocument[] = respBody?.data;
 
                 if (animals != undefined) {
-                    setAnimals(animals);
+                    setAnimals(respBody?.data?.map(mapDbAnimalToLogData) ?? []);
                 }
                 setIsLoading(false);
             } catch (error) {
