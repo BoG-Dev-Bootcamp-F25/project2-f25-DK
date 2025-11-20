@@ -3,7 +3,7 @@ import { useParams, useRouter } from 'next/navigation';
 import FormInput from './FormInput';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 type Inputs = {
     name: string;
@@ -23,6 +23,7 @@ const EditAnimalForm = () => {
         register,
         handleSubmit,
         setError,
+        reset,
         formState: { errors },
     } = useForm<Inputs>({
         defaultValues: {
@@ -50,15 +51,15 @@ const EditAnimalForm = () => {
                         message: respBody.error,
                     });
                 }
+                toast('Animal created successfully!');
+                reset();
             } catch (err) {
                 setError('root.serverError', {
-                    message: 'Failed to add a new training log entry',
+                    message: 'Failed to create a new animal',
                 });
             }
         }
-        console.log('Form data', data);
     };
-    console.log(errors);
     return (
         <div className="w-full max-w-6xl">
             {errors?.root?.serverError && (
@@ -116,9 +117,14 @@ const EditAnimalForm = () => {
                             min: 1,
                         })}
                     />
-                    {errors.hoursTrained && (
+                    {errors.hoursTrained?.type == 'required' && (
                         <p className="pl-4 text-red-400" role="alert">
-                            {errors.hoursTrained.message}
+                            Number of hours trained is required
+                        </p>
+                    )}
+                    {errors.hoursTrained?.type == 'min' && (
+                        <p className="pl-4 text-red-400" role="alert">
+                            Number of hours trained cannot be less than zero.
                         </p>
                     )}
                 </div>
