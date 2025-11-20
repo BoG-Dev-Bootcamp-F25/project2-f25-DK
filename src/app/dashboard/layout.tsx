@@ -14,8 +14,8 @@ export default function RootLayout({
     console.log('Active session data ', session);
 
     return (
-        <div className="h-full flex-1 flex flex-row border-t">
-            <div className="min-w-80 h-full overflow-y-auto hidden xl:block border-r">
+        <div className="h-full flex-1 flex flex-row ">
+            <div className="min-w-80 h-full overflow-y-auto hidden xl:block ">
                 <SideBar />
             </div>
             <div className="h-full flex-1 min-h-0 overflow-hidden">

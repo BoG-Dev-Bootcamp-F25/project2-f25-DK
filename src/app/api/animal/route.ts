@@ -45,7 +45,6 @@ export const POST = async (req: NextRequest): Promise<Response> => {
 
     const userId = (session?.user as any)._id;
     data.owner = userId;
-    data.profilePicture = '/images/appLogo.png';
 
     const animals = await findAnimalsByOwner({ id: userId });
     const animalsMatchingName = animals?.filter((a) => a.name == data.name);
