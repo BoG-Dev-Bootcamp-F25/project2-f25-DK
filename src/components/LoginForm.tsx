@@ -23,17 +23,36 @@ const LoginForm = () => {
         const result = await signIn('credentials', {
             email: data.email,
             password: data.password,
-            callbackUrl: '/dashboard/training-logs',
-        });
-        console.log(result);
 
-        if (!result || result.error) {
-            if (result?.status == 401) {
-                setError('root.serverError', {
-                    type: result.status as any,
-                    message: 'Your email or password is incorrect.',
-                });
+            redirect: false,
+        });
+
+        console.log('Result ', result);
+        // callbackUrl: '/dashboard/training-logs',
+
+        if (result) {
+            if (result?.ok) {
+                router.push('/dashboard/training-logs');
+            } else {
+                if (result?.status == 401) {
+                    setError('root.serverError', {
+                        type: 'auth',
+                        message: 'Your email or password is incorrect.',
+                    });
+                } else {
+                    setError('root.serverError', {
+                        type: 'general',
+                        message:
+                            'Internal server error. Contact admin for more details',
+                    });
+                }
             }
+        } else {
+            setError('root.serverError', {
+                type: 'general',
+                message:
+                    'Internal server error. Contact admin for more details',
+            });
         }
     };
 
@@ -46,7 +65,9 @@ const LoginForm = () => {
                 <h1 className="text-center font-bold text-6xl">Log In</h1>
 
                 {errors?.root?.serverError && (
-                    <p>{errors?.root?.serverError?.message}</p>
+                    <p className="p-4 text-2xl text-center text-red-400">
+                        {errors?.root?.serverError?.message}
+                    </p>
                 )}
                 <div className="mt-4 flex-1 flex flex-col justify-around">
                     <FormInput

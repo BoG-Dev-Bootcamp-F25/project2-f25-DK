@@ -82,7 +82,7 @@ const TrainingLogCard = ({ data }: { data: LogData }) => {
     const dateObj = new Date(dateStr);
 
     return (
-        <div className="min-h-0 overflow-y-auto flex flex-col xl:flex-row rounded-2xl  w-4/5 shadow-2xs xl:min-w-4xl">
+        <div className=" flex flex-col xl:flex-row rounded-2xl  w-4/5 shadow-2xs xl:min-w-4xl">
             <div className="bg-indigo-900  sm:rounded-t-2xl xl:rounded-t-none xl:rounded-l-2xl text-amber-50 py-8 px-4 flex flex-col items-center">
                 <span className="font-bold text-center text-4xl">
                     {dateObj.getDate()}

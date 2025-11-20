@@ -44,9 +44,11 @@ export const GET = async (req: NextRequest): Promise<Response> => {
             });
             animalLogs?.forEach((a) => logs.push(a));
         }
+        logs = logs.sort((a, b) =>
+            a.date < b.date ? -1 : b.date > a.date ? 1 : 0
+        );
     }
 
-    console.log('Training logs ', logs);
     return new Response(JSON.stringify({ data: logs }), { status: 200 });
 };
 

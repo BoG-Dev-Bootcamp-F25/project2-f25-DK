@@ -29,7 +29,8 @@ const EditAnimalForm = () => {
     } = useForm<Inputs>({
         defaultValues: {
             hoursTrained: 1,
-            profilePicture: 'https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/golden-retriever-dog-breed-info.jpeg',
+            profilePicture:
+                'https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/golden-retriever-dog-breed-info.jpeg',
         },
     });
 
@@ -38,30 +39,28 @@ const EditAnimalForm = () => {
         if (id) {
             // edit existing training log
             try {
-            const response = await fetch(`/api/animal/${id}`, {
-            method: 'PATCH',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-            });
-
-            const respBody = await response.json();
-
-            if (!respBody.data) {
-                setError('root.serverError', {
-                message: respBody.error,
+                const response = await fetch(`/api/animal/${id}`, {
+                    method: 'PATCH',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
                 });
-                return;
-            }
 
-            toast('Animal updated successfully!');
-            router.push('/dashboard/animals');
+                const respBody = await response.json();
+
+                if (!respBody.data) {
+                    setError('root.serverError', {
+                        message: respBody.error,
+                    });
+                    return;
+                }
+
+                toast('Animal updated successfully!');
             } catch (err) {
-            setError('root.serverError', {
-                message: 'Failed to update animal',
-            });
+                setError('root.serverError', {
+                    message: 'Failed to update animal',
+                });
             }
-
         } else {
             //create new training log
             try {
@@ -78,10 +77,9 @@ const EditAnimalForm = () => {
                     });
                 }
                 toast('Animal created successfully!');
-                router.push('/dashboard/animals');
                 reset();
             } catch (err) {
-                console.log
+                console.log;
                 setError('root.serverError', {
                     message: 'Failed to create a new animal',
                 });
@@ -93,42 +91,42 @@ const EditAnimalForm = () => {
         if (!id) return;
 
         const fetchAnimal = async () => {
-        try {
-            const response = await fetch(`/api/animal/${id}`, {
-            method: 'GET',
-            credentials: 'include',
-            });
-            const respBody = await response.json();
-            const animal = respBody.data;
+            try {
+                const response = await fetch(`/api/animal/${id}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                const respBody = await response.json();
+                const animal = respBody.data;
 
-            if (animal) {
-            reset({
-                name: animal.name,
-                breed: animal.breed,
-                hoursTrained: animal.hoursTrained,
-                profilePicture: animal.profilePicture,
-            });
+                if (animal) {
+                    reset({
+                        name: animal.name,
+                        breed: animal.breed,
+                        hoursTrained: animal.hoursTrained,
+                        profilePicture: animal.profilePicture,
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to load animal:', err);
             }
-        } catch (err) {
-            console.error('Failed to load animal:', err);
-        }
         };
 
         fetchAnimal();
     }, [id, reset]);
 
     return (
-        <div className="w-full max-w-6xl">
+        <div className="h-full w-full max-w-6xl">
             {errors?.root?.serverError && (
                 <p className="p-4 text-lg text-red-400">
                     {errors?.root?.serverError.message}
                 </p>
             )}
+            <ToastContainer />
             <form
-                className="h-full m-2 grid grid-cols-3"
+                className=" m-2 grid grid-cols-3"
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <ToastContainer />
                 <div className="col-span-3">
                     <FormInput
                         label="Animal Name"
@@ -137,9 +135,9 @@ const EditAnimalForm = () => {
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
                         {...register('name', { required: true })}
                     />
-                    {errors.name && (
+                    {errors.name?.type === 'required' && (
                         <p className="pl-4 text-red-400" role="alert">
-                            {errors.name.message}
+                            Animal name is required
                         </p>
                     )}
                 </div>
@@ -147,14 +145,13 @@ const EditAnimalForm = () => {
                     <FormInput
                         label="Breed"
                         placeholder="Breed"
-                        // type="dropdown"
-                        // dropdownOptions={
-                        //     new Map([
-                        //         ['Labrador Retriever', 'Labrador Retriever'],
-                        //         ['German Shepherd', 'German Shepherd'],
-                        //     ])
-                        // }
-                        type="text"
+                        type="dropdown"
+                        dropdownOptions={
+                            new Map([
+                                ['Labrador Retriever', 'Labrador Retriever'],
+                                ['German Shepherd', 'German Shepherd'],
+                            ])
+                        }
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
                         {...register('breed', { required: true })}
                     />

@@ -6,7 +6,7 @@ import Link from 'next/link';
 const NavBar = () => {
     const { data: session } = useSession();
     return (
-        <div className="h-full border-0 shadow-2xs flex flex-row items-center justify-start">
+        <div className="h-full border-0 shadow-md flex flex-row items-center justify-start">
             <Link
                 href={session ? '/dashboard' : '/'}
                 className="ml-8 flex flex-row gap-2 items-center"

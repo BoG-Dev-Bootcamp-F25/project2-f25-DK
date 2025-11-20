@@ -156,7 +156,7 @@ const EditTrainingLogForm = () => {
         <div className="h-full w-4/5">
             <ToastContainer />
             <form
-                className="overflow-y-auto m-2 grid grid-cols-3"
+                className="m-2 grid grid-cols-3"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div className="col-span-3">

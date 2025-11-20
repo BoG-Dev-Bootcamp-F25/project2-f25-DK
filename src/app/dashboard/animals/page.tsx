@@ -1,65 +1,45 @@
-"use client"
-import LoginForm from '@/components/LoginForm';
-import TrainingLogCard, { mockData } from '@/components/TrainingLogCard';
+'use client';
 import Link from 'next/link';
 import Image from 'next/image';
 import AnimalCard from '@/components/AnimalCard';
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { AnimalDocument } from '../../../../server/mongodb/models/Animal';
+import AnimalsGrid from '@/components/AnimalsGrid';
+import { ToastContainer } from 'react-toastify';
 
-type LogData = {
-  _id: string;
-  user: { _id: string; fullName: string };
-  name: string;
-  animal_name: string;
-  breed: string;
-  hours: number;
-  url: string;
-};
-
-const mapDbAnimalToLogData = (dbAnimal: any): LogData => ({
-  _id: dbAnimal._id,
-  user: {
-    _id: dbAnimal.owner._id,
-    fullName: dbAnimal.owner.fullName
-  },
-  name: dbAnimal.name,
-  animal_name: dbAnimal.name,
-  breed: dbAnimal.breed,
-  hours: dbAnimal.hoursTrained,
-  url: dbAnimal.profilePicture,
-});
 export default function AnimalsPage() {
-    const { data: session, status } = useSession();
-    const [animals, setAnimals] = useState<LogData[]>([]);
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-      const fetchTrainingLogs = async () => {
-        try {
-          const res = await fetch('/api/animal', { method: 'GET', credentials: 'include' });
-          if (!res.ok) throw new Error("Failed to fetch logs");
-          const data = await res.json();
-          console.log("test")
-          console.log(data)
-          setAnimals(data?.data?.map(mapDbAnimalToLogData) ?? []);
-        } catch (err) {
-          console.error(err);
-        } finally {
-          setLoading(false);
-        }
-      };
+    const [isLoading, setIsLoading] = useState(true);
+    const [animals, setAnimals] = useState<AnimalDocument[]>([]);
 
-      if (session) {
-        fetchTrainingLogs();
-      }
-    }, [session]);
+    useEffect(() => {
+        const fetchAnimals = async () => {
+            try {
+                const response = await fetch('/api/animal', {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                const respBody = await response.json();
+                const animals: AnimalDocument[] = respBody?.data;
+
+                if (animals != undefined) {
+                    setAnimals(animals);
+                }
+                setIsLoading(false);
+            } catch (error) {
+                setIsLoading(false);
+            }
+        };
+
+        fetchAnimals();
+    }, [isLoading]);
 
     return (
-        <main className="min-h-full w-full bg-white dark:bg-black flex flex-col">
+        <main className="min-h-full w-full dark:bg-black flex flex-col">
             <div className="p-8  flex flex-row justify-between items-center">
                 <h1 className="text-left text-2xl font-bold text-neutral-600">
                     Animals
                 </h1>
+
                 <Link className=" xl:mr-16" href="/dashboard/animals/new">
                     <div className="flex flex-row gap-2">
                         <Image
@@ -73,25 +53,9 @@ export default function AnimalsPage() {
                         </span>
                     </div>
                 </Link>
-              </div>
-                
-                <hr />
-                <div className="mt-8 mx-4 grid xl:grid-cols-3 gap-1">
-                  {loading && <div>Loading...</div>}
-                  {!loading && animals.length === 0 && <div>No animals found</div>}
-
-                  {!loading &&
-                    animals.map((animal) => (
-                      <Link
-                        key={animal._id}
-                        href={`/dashboard/animals/${animal._id}`}   // <-- LINK HERE
-                        className="flex justify-center"
-                      >
-                        <AnimalCard data={animal} />
-                      </Link>
-                    ))
-                  }
-                </div>
-            </main>
+            </div>
+            <hr />
+            <AnimalsGrid isLoading={isLoading} animals={animals} />
+        </main>
     );
 }
