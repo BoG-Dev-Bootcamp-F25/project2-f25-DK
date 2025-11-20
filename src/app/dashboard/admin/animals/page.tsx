@@ -3,7 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { AnimalDocument } from '../../../../../server/mongodb/models/Animal';
 import { useEffect, useState } from 'react';
-import AnimalCard from '@/components/AnimalCard';
+
+import AnimalsGrid from '@/components/AnimalsGrid';
 
 export default function AdminAnimalsPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +32,7 @@ export default function AdminAnimalsPage() {
         fetchAnimals();
     }, [isLoading]);
     return (
-        <main className="min-h-full w-full bg-white dark:bg-black flex flex-col">
+        <main className="h-full w-full bg-white dark:bg-black flex flex-col">
             <div className="p-8  flex flex-row justify-between items-center">
                 <h1 className="text-left text-2xl font-bold text-neutral-600">
                     All Animals
@@ -52,19 +53,7 @@ export default function AdminAnimalsPage() {
             </div>
 
             <hr />
-            <div className="mt-8 mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {animals.map((a, i) => {
-                    return (
-                        <div
-                            className="flex items-center justify-center "
-                            key={i}
-                        >
-                            <AnimalCard data={a} />
-                        </div>
-                    );
-                })}
-                {!isLoading && animals.length == 0 && <p>No animals yet!</p>}
-            </div>
+            <AnimalsGrid isLoading={isLoading} animals={animals} />
         </main>
     );
 }

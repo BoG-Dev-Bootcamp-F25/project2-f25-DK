@@ -1,7 +1,31 @@
 'use client';
+import { useEffect, useState } from 'react';
 import { AnimalDocument } from '../../server/mongodb/models/Animal';
+import { UserDocument } from '../../server/mongodb/models/User';
 
 const AnimalCard = ({ data }: { data: AnimalDocument }) => {
+    const [user, setUser] = useState<Partial<UserDocument> | null>(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await fetch(`/api/user/${data.owner}`);
+                const respBody = await response.json();
+                const user = respBody.data;
+                if (user != undefined) {
+                    setUser(user);
+                } else {
+                    setUser({ fullName: 'Long Lam' });
+                }
+            } catch (error) {
+                setUser({ fullName: 'Long Lam' });
+            }
+        };
+
+        if (!user) {
+            fetchUser();
+        }
+    }, [user]);
     return (
         <div className="w-100 rounded-lg overflow-hidden shadow-lg">
             <img src={data.profilePicture} className="w-full h-60"></img>
@@ -15,10 +39,11 @@ const AnimalCard = ({ data }: { data: AnimalDocument }) => {
                         {data.name + ' - ' + data.breed}
                     </div>
                     <div className="text-sm text-gray-700 truncate">
-                        {data.user.fullName +
-                            ' - Trained ' +
-                            data.hours +
-                            ' hours'}
+                        {user &&
+                            user.fullName +
+                                ' - Trained ' +
+                                data.hoursTrained +
+                                ' hours'}
                     </div>
                 </div>
             </div>

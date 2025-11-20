@@ -1,61 +1,36 @@
 'use client';
-import LoginForm from '@/components/LoginForm';
-import TrainingLogCard, { mockData } from '@/components/TrainingLogCard';
 import Link from 'next/link';
 import Image from 'next/image';
 import AnimalCard from '@/components/AnimalCard';
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { AnimalDocument } from '../../../../server/mongodb/models/Animal';
+import AnimalsGrid from '@/components/AnimalsGrid';
 
-type LogData = {
-    _id: string;
-    user: { _id: string; fullName: string };
-    name: string;
-    animal_name: string;
-    breed: string;
-    hours: number;
-    url: string;
-};
-
-const mapDbAnimalToLogData = (dbAnimal: any): LogData => ({
-    _id: dbAnimal._id,
-    user: {
-        _id: dbAnimal.owner._id,
-        fullName: dbAnimal.owner.fullName,
-    },
-    name: dbAnimal.name,
-    animal_name: dbAnimal.name,
-    breed: dbAnimal.breed,
-    hours: dbAnimal.hoursTrained,
-    url: dbAnimal.profilePicture,
-});
 export default function AnimalsPage() {
-    const { data: session, status } = useSession();
-    const [animals, setAnimals] = useState<LogData[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const [animals, setAnimals] = useState<AnimalDocument[]>([]);
+
     useEffect(() => {
-        const fetchTrainingLogs = async () => {
+        const fetchAnimals = async () => {
             try {
-                const res = await fetch('/api/animal', {
+                const response = await fetch('/api/animal', {
                     method: 'GET',
                     credentials: 'include',
                 });
-                if (!res.ok) throw new Error('Failed to fetch animals');
-                const data = await res.json();
-                console.log('test');
-                console.log(data);
-                setAnimals(data?.data?.map(mapDbAnimalToLogData) ?? []);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
+                const respBody = await response.json();
+                const animals: AnimalDocument[] = respBody?.data;
+
+                if (animals != undefined) {
+                    setAnimals(animals);
+                }
+                setIsLoading(false);
+            } catch (error) {
+                setIsLoading(false);
             }
         };
 
-        if (session) {
-            fetchTrainingLogs();
-        }
-    }, [session]);
+        fetchAnimals();
+    }, [isLoading]);
 
     return (
         <main className="min-h-full w-full bg-white dark:bg-black flex flex-col">
@@ -77,18 +52,8 @@ export default function AnimalsPage() {
                     </div>
                 </Link>
             </div>
-
             <hr />
-            <div className="mt-8 mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {loading && <div>Loading...</div>}
-                {!loading && animals.length === 0 && (
-                    <div>No animals found</div>
-                )}
-                {!loading &&
-                    animals.map((animal) => (
-                        <AnimalCard key={animal._id} data={animal} />
-                    ))}
-            </div>
+            <AnimalsGrid isLoading={isLoading} animals={animals} />
         </main>
     );
 }

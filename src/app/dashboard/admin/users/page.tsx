@@ -32,7 +32,7 @@ export default function AdminUsersPage() {
     }, [isLoading]);
 
     return (
-        <main className="min-h-full w-full bg-white dark:bg-black flex flex-col">
+        <main className="h-full min-h-0 overflow-hidden w-full bg-white dark:bg-black flex flex-col">
             <div className="p-8  flex flex-row justify-between items-center">
                 <h1 className="text-left text-2xl font-bold text-neutral-600">
                     All Users
@@ -40,7 +40,7 @@ export default function AdminUsersPage() {
             </div>
 
             <hr />
-            <div className=" mt-8 mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="flex-1 overflow-auto mt-8 mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {isLoading ? (
                     <Skeleton count={10} />
                 ) : (

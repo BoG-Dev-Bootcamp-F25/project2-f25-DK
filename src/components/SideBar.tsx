@@ -101,32 +101,36 @@ const SideBar = () => {
                     url="/dashboard/animals"
                 />
                 <hr className="p-2"></hr>
-                <h1 className="font-bold pl-2 text-xl">Admin Access</h1>
+                {(session?.user as any)?.admin && (
+                    <>
+                        <h1 className="font-bold pl-2 text-xl">Admin Access</h1>
 
-                <SidebarItem
-                    text="All Training"
-                    inactiveIconSrc="/images/inactiveAllTrainingLogo.png"
-                    activeIconSrc="/images/activeAllTrainingLogo.png"
-                    url="/dashboard/admin/training-logs"
-                />
+                        <SidebarItem
+                            text="All Training"
+                            inactiveIconSrc="/images/inactiveAllTrainingLogo.png"
+                            activeIconSrc="/images/activeAllTrainingLogo.png"
+                            url="/dashboard/admin/training-logs"
+                        />
 
-                <SidebarItem
-                    text="All Animals"
-                    inactiveIconSrc="/images/inactiveAllAnimalsLogo.png"
-                    activeIconSrc="/images/activeAllAnimalsLogo.png"
-                    url="/dashboard/admin/animals"
-                />
+                        <SidebarItem
+                            text="All Animals"
+                            inactiveIconSrc="/images/inactiveAllAnimalsLogo.png"
+                            activeIconSrc="/images/activeAllAnimalsLogo.png"
+                            url="/dashboard/admin/animals"
+                        />
 
-                <SidebarItem
-                    text="All Users"
-                    inactiveIconSrc="/images/inactiveAllUsersLogo.png"
-                    activeIconSrc="/images/activeAllUsersLogo.png"
-                    url="/dashboard/admin/users"
-                />
-                <hr></hr>
+                        <SidebarItem
+                            text="All Users"
+                            inactiveIconSrc="/images/inactiveAllUsersLogo.png"
+                            activeIconSrc="/images/activeAllUsersLogo.png"
+                            url="/dashboard/admin/users"
+                        />
+                        <hr></hr>
+                    </>
+                )}
             </div>
 
-            <div className="flex items-center m-4 gap-6">
+            <div className="flex items-center justify-between m-4 gap-6">
                 <div className="hover:bg-gray-100 flex gap-2 items-center ">
                     <div className="bg-red-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
                         {session?.user?.name?.charAt(0)}
@@ -143,7 +147,9 @@ const SideBar = () => {
                         )}
                     </div>
                 </div>
-                <LogoutButton />
+                <div>
+                    <LogoutButton />
+                </div>
             </div>
         </div>
     );
