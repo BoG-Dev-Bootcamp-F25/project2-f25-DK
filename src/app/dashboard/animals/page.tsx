@@ -79,8 +79,18 @@ export default function AnimalsPage() {
                 <div className="mt-8 mx-4 grid xl:grid-cols-3 gap-1">
                   {loading && <div>Loading...</div>}
                   {!loading && animals.length === 0 && <div>No animals found</div>}
+
                   {!loading &&
-                    animals.map((animal) => <AnimalCard key={animal._id} data={animal} />)}
+                    animals.map((animal) => (
+                      <Link
+                        key={animal._id}
+                        href={`/dashboard/animals/${animal._id}`}   // <-- LINK HERE
+                        className="flex justify-center"
+                      >
+                        <AnimalCard data={animal} />
+                      </Link>
+                    ))
+                  }
                 </div>
             </main>
     );

@@ -4,6 +4,7 @@ import FormInput from './FormInput';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { toast, ToastContainer } from 'react-toastify';
+import { useEffect } from 'react';
 
 type Inputs = {
     name: string;
@@ -36,6 +37,31 @@ const EditAnimalForm = () => {
         // TODO: Use the authenticated user's ID to get the list of animals for the user.
         if (id) {
             // edit existing training log
+            try {
+            const response = await fetch(`/api/animal/${id}`, {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+            });
+
+            const respBody = await response.json();
+
+            if (!respBody.data) {
+                setError('root.serverError', {
+                message: respBody.error,
+                });
+                return;
+            }
+
+            toast('Animal updated successfully!');
+            router.push('/dashboard/animals');
+            } catch (err) {
+            setError('root.serverError', {
+                message: 'Failed to update animal',
+            });
+            }
+
         } else {
             //create new training log
             try {
@@ -52,6 +78,7 @@ const EditAnimalForm = () => {
                     });
                 }
                 toast('Animal created successfully!');
+                router.push('/dashboard/animals');
                 reset();
             } catch (err) {
                 console.log
@@ -61,6 +88,35 @@ const EditAnimalForm = () => {
             }
         }
     };
+
+    useEffect(() => {
+        if (!id) return;
+
+        const fetchAnimal = async () => {
+        try {
+            const response = await fetch(`/api/animal/${id}`, {
+            method: 'GET',
+            credentials: 'include',
+            });
+            const respBody = await response.json();
+            const animal = respBody.data;
+
+            if (animal) {
+            reset({
+                name: animal.name,
+                breed: animal.breed,
+                hoursTrained: animal.hoursTrained,
+                profilePicture: animal.profilePicture,
+            });
+            }
+        } catch (err) {
+            console.error('Failed to load animal:', err);
+        }
+        };
+
+        fetchAnimal();
+    }, [id, reset]);
+
     return (
         <div className="w-full max-w-6xl">
             {errors?.root?.serverError && (
@@ -91,13 +147,14 @@ const EditAnimalForm = () => {
                     <FormInput
                         label="Breed"
                         placeholder="Breed"
-                        type="dropdown"
-                        dropdownOptions={
-                            new Map([
-                                ['Labrador Retriever', 'Labrador Retriever'],
-                                ['German Shepherd', 'German Shepherd'],
-                            ])
-                        }
+                        // type="dropdown"
+                        // dropdownOptions={
+                        //     new Map([
+                        //         ['Labrador Retriever', 'Labrador Retriever'],
+                        //         ['German Shepherd', 'German Shepherd'],
+                        //     ])
+                        // }
+                        type="text"
                         className="flex-1 p-4 text-2xl w-full rounded-lg "
                         {...register('breed', { required: true })}
                     />
