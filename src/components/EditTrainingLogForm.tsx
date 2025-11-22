@@ -22,6 +22,7 @@ const EditTrainingLogForm = () => {
     const params = useParams();
     const { id } = params;
     const today = new Date();
+    const router = useRouter();
 
     const [editingLog, setEditingLog] = useState<Partial<Inputs> | null>(null);
     const [animals, setAnimals] = useState<Map<string, number> | null>(null);
@@ -115,6 +116,7 @@ const EditTrainingLogForm = () => {
 
                 if (response.ok) {
                     toast('Training log updated successfully.');
+                    router.push('/dashboard/training-logs');
                 } else {
                     setError('root.serverError', {
                         message: respBody.error,
@@ -139,6 +141,7 @@ const EditTrainingLogForm = () => {
 
                 if (response.ok) {
                     toast('Training log created successfully.');
+                    router.push('/dashboard/training-logs');
                 } else {
                     setError('root.serverError', {
                         message: respBody.error,

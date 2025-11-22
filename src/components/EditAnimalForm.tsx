@@ -56,6 +56,7 @@ const EditAnimalForm = () => {
                 }
 
                 toast('Animal updated successfully!');
+                router.push('/dashboard/animals');
             } catch (err) {
                 setError('root.serverError', {
                     message: 'Failed to update animal',
@@ -77,7 +78,7 @@ const EditAnimalForm = () => {
                     });
                 }
                 toast('Animal created successfully!');
-                reset();
+                router.push('/dashboard/animals');
             } catch (err) {
                 console.log;
                 setError('root.serverError', {

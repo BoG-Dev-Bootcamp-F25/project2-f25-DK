@@ -6,6 +6,7 @@ import { TrainingLogDocument } from '../../../../server/mongodb/models/TrainingL
 import findAnimalById from '../../../../server/mongodb/actions/findAnimalById';
 import createTrainingLog from '../../../../server/mongodb/actions/createTrainingLog';
 import { auth } from '@/lib/auth';
+import updateAnimal from '../../../../server/mongodb/actions/updateAnimal';
 
 export const GET = async (req: NextRequest): Promise<Response> => {
     const session = await auth();
@@ -93,6 +94,11 @@ export const POST = async (req: NextRequest): Promise<Response> => {
     }
 
     const newLog = await createTrainingLog(data);
+
+    if (newLog) {
+        animalObj.hoursTrained = animalObj?.hoursTrained + newLog?.hours;
+        await updateAnimal(animalObj);
+    }
 
     return new Response(JSON.stringify({ data: newLog }), { status: 200 });
 };

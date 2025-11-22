@@ -25,7 +25,6 @@ test('create a new animal', async ({ page }) => {
         .fill('5');
 
     await page.getByRole('button', { name: 'Save' }).click();
-    await expect(page.getByText('Animal created successfully!')).toBeVisible();
 
     await page.getByRole('link', { name: 'Animals icon Animals' }).click();
     await expect(page.getByText('Rover - German Shepherd')).toBeVisible();
