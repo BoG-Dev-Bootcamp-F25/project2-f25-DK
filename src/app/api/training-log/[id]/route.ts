@@ -2,6 +2,8 @@ import { NextRequest } from 'next/server';
 import updateTrainingLog from '../../../../../server/mongodb/actions/updateTrainingLog';
 import { auth } from '@/lib/auth';
 import findTrainingLogById from '../../../../../server/mongodb/actions/findTrainingLogById';
+import findAnimalById from '../../../../../server/mongodb/actions/findAnimalById';
+import updateAnimal from '../../../../../server/mongodb/actions/updateAnimal';
 
 export const GET = async (
     req: NextRequest,
@@ -66,6 +68,14 @@ export const PATCH = async (req: NextRequest): Promise<Response> => {
     const dateObj = new Date(year, month - 1, date); // the month is 0-indexed
     data.date = dateObj;
     data.user = userId;
+
+    const oldData = await findTrainingLogById(data._id);
+    const animal = await findAnimalById(data.animal);
+
+    if (animal && oldData) {
+        animal.hoursTrained = animal?.hoursTrained - oldData?.hours;
+        await updateAnimal(animal);
+    }
 
     const trainingLog = await updateTrainingLog(data);
 
